@@ -23,7 +23,7 @@
 - [MSIME-Engine](https://github.com/metasequoiaime/MSIME-Engine) — 跨平台 C++ 输入引擎
 - [MSIME-Server](https://github.com/metasequoiaime/MSIME-Server) — Windows 常驻后端
 - [MSIME-Dict](https://github.com/metasequoiaime/MSIME-Dict) — 词库与构建脚本
-- [msimeui](https://github.com/metasequoiaime/msimeui) — 自研原生 GUI 框架（Win32 + Direct2D）
+- [MSIME-UI](https://github.com/metasequoiaime/MSIME-UI) — 自研原生 GUI 框架（Win32 + Direct2D）
 - [MSIME-Docs](https://github.com/metasequoiaime/MSIME-Docs) — 文档（施工中）
 
 其余仓库（语音输入、辅助码、n-gram 联想、安装器、皮肤示例等）见下方仓库列表。
