@@ -81,7 +81,15 @@
 ## 如何开始
 
 1. 在 <https://github.com/metasequoiaime> 找到你感兴趣的仓库，先按它的 README 把项目跑起来。
-2. 从 Issues 里挑一个，或者直接提你自己遇到的问题。不确定该从哪开始，就在 Issue 或社区群里问，说明你会什么、想做什么方向。
+2. 挑一个 Issue。主仓的 Issue 已经按可接手程度分好类，直接点下面的筛选进去看：
+
+   - [good first issue](https://github.com/metasequoiaime/MSIME-Windows/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)——改动小、根因和修法已经写明，适合第一次参与。
+   - [no-code](https://github.com/metasequoiaime/MSIME-Windows/issues?q=is%3Aissue+is%3Aopen+label%3Ano-code)——**完全不需要写代码**：补图标资源、加词库条目、整理免费额度、补文档。不会 C++ 也能接。
+   - [help wanted](https://github.com/metasequoiaime/MSIME-Windows/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)——根因明确、改动中等，适合已经熟悉代码的人。
+   - [needs-design](https://github.com/metasequoiaime/MSIME-Windows/issues?q=is%3Aissue+is%3Aopen+label%3Aneeds-design)——方案还没定。这类**不要直接动手写**，先在 Issue 里讨论清楚再说，否则很可能白做。
+   - [needs-info](https://github.com/metasequoiaime/MSIME-Windows/issues?q=is%3Aissue+is%3Aopen+label%3Aneeds-info)——卡在等报障人补充信息。如果你能复现其中某个问题并补上版本、环境和步骤，那本身就是一次很实在的贡献。
+
+   也可以直接提你自己遇到的问题。不确定该从哪开始，就在 Issue 或社区群里问，说明你会什么、想做什么方向。
 3. 提 PR。说明改了什么、为什么这么改、你怎么验证的。
 
 ## 几条约定
