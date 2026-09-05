@@ -38,7 +38,7 @@
 
 ### GUI 框架与界面（C++ / Direct2D / 设计）
 
-`MSIME-UI` 是我们自研的原生 GUI 框架，目前已有布局系统、控件树和一批基础控件，还远没有完成。方向包括：
+[MSIME-Windows 的 `ui/`](https://github.com/metasequoiaime/MSIME-Windows/tree/main/ui) 是我们自研的原生 GUI 框架，目前已有布局系统、控件树和一批基础控件，还远没有完成。方向包括：
 
 - 补充和完善控件、布局、动画、输入事件处理；
 - 开发候选窗口、设置页面、状态栏组件；

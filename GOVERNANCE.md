@@ -4,11 +4,11 @@
 
 ## 维护分布
 
-按各仓库的实际提交量统计（2026-09-05）：
+按各仓库的实际提交量统计（2026-09-05；路径按 2026-09-06 合仓结果更新）：
 
 | 领域 | 仓库 | 主要维护者 |
 | --- | --- | --- |
-| Windows 前端与后端、引擎、GUI 框架 | MSIME-Windows、MSIME-Server、MSIME-Engine、MSIME-UI | fanlusky |
+| Windows 前端与后端、引擎、GUI 框架 | MSIME-Windows（windows/、server/、ui/ 等）、MSIME-Engine | fanlusky |
 | Apple 与 Linux 前端 | MSIME-Apple、MSIME-Linux | houko |
 
 **每个领域目前都只有一个人深入其中，两个领域之间几乎没有重叠。** 这意味着任一维护者暂时抽不开身，对应的那半就会停下来。这是这个项目当前最大的结构性风险，比任何单个技术债都重要，也是我们持续招募贡献者的直接原因。

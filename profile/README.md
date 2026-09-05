@@ -1,6 +1,6 @@
 # 水杉输入法 · Metasequoia IME
 
-一套开源中文输入法。从 Windows 纯 TSF 前端起步，现在引擎、词库、UI 框架和各平台前端拆成独立仓库，各平台共用同一套 C++ 引擎，界面和文本注入各自原生实现。GPL-3.0，现在和将来都会保持 100% 开源。
+一套开源中文输入法。从 Windows 纯 TSF 前端起步，现在公共引擎、词库、辅助码与语音模块统一在 MSIME-Engine，各平台共用同一套 C++ 引擎，界面和文本注入各自原生实现。GPL-3.0，现在和将来都会保持 100% 开源。
 
 官网：<https://msime.app>
 
@@ -19,16 +19,15 @@
 
 ## 主要仓库
 
-- [MSIME-Windows](https://github.com/metasequoiaime/MSIME-Windows) — Windows TSF 前端
+- [MSIME-Windows](https://github.com/metasequoiaime/MSIME-Windows) — Windows 平台产品（TSF、Server、GUI、页面与安装器）
 - [MSIME-Apple](https://github.com/metasequoiaime/MSIME-Apple) — macOS / iOS 原生前端
 - [MSIME-Linux](https://github.com/metasequoiaime/MSIME-Linux) — IBus 前端与桌面工具
-- [MSIME-Engine](https://github.com/metasequoiaime/MSIME-Engine) — 跨平台 C++ 输入引擎
-- [MSIME-Server](https://github.com/metasequoiaime/MSIME-Server) — Windows 常驻后端
-- [MSIME-Dict](https://github.com/metasequoiaime/MSIME-Dict) — 词库与构建脚本
-- [MSIME-UI](https://github.com/metasequoiaime/MSIME-UI) — 自研原生 GUI 框架（Win32 + Direct2D）
+- [MSIME-Engine](https://github.com/metasequoiaime/MSIME-Engine) — 公共输入引擎、词库构建与数据、辅助码、语音模块
+- [Windows/server](https://github.com/metasequoiaime/MSIME-Windows/tree/main/server) — Windows 常驻后端
+- [Windows/ui](https://github.com/metasequoiaime/MSIME-Windows/tree/main/ui) — 自研原生 GUI 框架（Win32 + Direct2D）
 - [MSIME-Docs](https://github.com/metasequoiaime/MSIME-Docs) — 文档（施工中）
 
-其余仓库（语音输入、辅助码、n-gram 联想、安装器、皮肤示例等）见下方仓库列表。
+其余仓库（n-gram 联想、皮肤示例等）见下方仓库列表。
 
 ## 参与贡献
 
