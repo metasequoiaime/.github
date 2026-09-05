@@ -4,6 +4,8 @@
 
 不知道从哪开始，先看[招募开源开发者](RECRUITING.md)，里面按方向列了可以认领的事情，包括不需要写代码的部分。
 
+跨仓职责、契约和产品组合规则见 [组织 AGENTS.md](AGENTS.md)。平台专属实现规则以对应仓库为准。
+
 ## 先找对仓库
 
 水杉输入法拆成多个仓库，问题往往不在你看到它的那个仓库里：
@@ -15,7 +17,7 @@
 | 某个词打不出来、拼音或权重错了 | [MSIME-Dict](https://github.com/metasequoiaime/MSIME-Dict) |
 | 辅助码筛选结果不对 | [MSIME-HelpCode](https://github.com/metasequoiaime/MSIME-HelpCode) |
 | Windows 上设置界面、托盘菜单、工具栏的行为 | [MSIME-Server](https://github.com/metasequoiaime/MSIME-Server) |
-| 安装、升级、卸载失败 | [msime-installer](https://github.com/metasequoiaime/msime-installer) |
+| 安装、升级、卸载失败 | [MSIME-Installer](https://github.com/metasequoiaime/MSIME-Installer) |
 
 拿不准就提到你遇到问题的那个仓库，维护者会转移，不要因为不确定而不提。
 
