@@ -1,26 +1,72 @@
-# 组织规范
+# 水杉输入法：组织级协作与架构约定
 
-面向在本组织各仓库里工作的自动化助手。人看的治理规则在 [GOVERNANCE.md](GOVERNANCE.md)，本文只补充助手容易踩的部分。
+本文件规定跨仓边界。各仓的 AGENTS.md 负责当地实现和验证，Windows 专属的
+TSF、COM、HWND、DPI 与 uiAccess 规则不适用于 Apple/Linux 或纯引擎代码。
+通用贡献流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+
+## 职责与依赖
+
+| 仓库 | 权威职责 | 依赖关系 |
+|---|---|---|
+| MSIME-Engine | 平台无关输入行为、候选、学习、查询/回放与共享协议定义 | 不依赖任何平台前端或 UI |
+| MSIME-Windows | TSF 宿主适配、焦点、按键预判与文档 edit session | 运行时经管道访问 Server；只消费 Engine 契约头 |
+| MSIME-Server | Windows 引擎进程、配置、平台服务与原生窗口宿主 | Engine、通用 MSIME-UI、UiHtml 页面 |
+| MSIME-Apple / MSIME-Linux | InputMethodKit/iOS、IBus 平台适配 | Engine 输入会话、Dict 数据、HelpCode 数据 |
+| MSIME-Dict / MSIME-HelpCode | 可追溯的基础词库产品、辅助码 | 数据生产者；不包含平台 UI 逻辑 |
+| MSIME-UiHtml | Windows WebView 页面与样式 | Engine Web 消息契约；无独立候选/学习状态机 |
+| MSIME-UI | 可复用的原生 GUI 基础设施 | 不依赖输入法业务、Server 全局变量或字典 |
+| MSIME-Installer | Windows 部署、注册与升级回放编排 | 消费 Windows 锁定组合的产物 |
+| MSIME-Docs | 用户文档正文与产品架构说明 | 文档内容权威 |
+| MSIME-Web | 官网呈现、导航、下载与文档渲染 | 固定 Docs 内容版本；更新信息来自已发布 Release |
+
+## 跨仓变更
+
+- 修改共享接口时先更新权威实现及兼容性测试，再更新消费者固定版本，并在 PR 中互相链接。
+- 上游先合，再把下游 gitlink 指向合并后的默认分支提交，不指向 PR 分支上的 commit。
+  指向未合并的 commit 会让下游默认分支引用一段随时可能被 rebase 或废弃的历史。
+- Windows 产品输入由 `MSIME-Windows/product-lock.json` 固定到 commit 和数据摘要；
+  Server、TSF、UiHtml 的 Engine 契约必须一致。Git 子模块已固定的单仓依赖无需另起一份可漂移的锁。
+- 通过组合 CI 验证实际发布输入。单仓编译通过不等价于产品兼容；Windows 要覆盖 x86/x64 客户端。
+- 保持 Windows DLL/Server 进程隔离；是否合仓取决于维护边界，不应通过合仓替代协议和产物契约。
 
 ## 版本号
 
-**三个前端一律使用语义化版本，不使用日历版本。** MSIME-Windows、MSIME-Linux、MSIME-Apple 各自维护自己的 semver 序列，由 release-please 的 `simple` 策略从 conventional commits 推进。
+三个前端一律使用语义化版本，不使用日历版本。各仓维护自己的 semver 序列，由 release-please 的
+`simple` 策略从 conventional commits 推进。
 
-这条不是风格偏好，是已经付出过代价的结论。2026-09-05 曾有一次把三端统一切到 `2026.9.0` 的尝试，当天回退，原因是：
+这条是已经付出过代价的结论，不是风格偏好。2026-09-05 曾把三端统一切到 `2026.9.0`，当天回退：
+release-please 没有 CalVer 策略，只能手工重置序列并钉死 `always-bump-patch`，而它据以生成
+changelog 的序列一旦与 tag 历史脱节，就会把早已发布的功能重写成一整条新版本记录（Linux 64 行、
+Apple 158 行）。更不可逆的是版本号本身——`v2026.9.1` 发布约二十分钟即删，但 dpkg 和 rpm 认为
+`2026.9.1 > 0.7.0`，那个窗口里装过的用户不引入永久 epoch 前缀就收不到升级。
 
-- release-please 没有 CalVer 策略，只能靠手工重置版本序列并钉死 `always-bump-patch`。它据以生成 changelog 的序列一旦与 tag 历史脱节，就会把早已发布过的功能重新写成一整条新版本记录（Linux 64 行、Apple 158 行）。
-- 版本号一旦发出去就不可逆。`v2026.9.1` 发布约二十分钟即删除，但 dpkg 和 rpm 认为 `2026.9.1 > 0.7.0`，任何在那个窗口里装过的用户都不会再收到升级提示，除非引入一个永久的 epoch 前缀。
+版本方案属于跨仓库契约，按 [GOVERNANCE.md](GOVERNANCE.md) 需要受影响的维护者达成一致，
+助手不得单方面提出或实施；要重开这个话题先开 Issue。
 
-改动版本方案属于 GOVERNANCE.md 里「跨仓库的契约」，需要受影响的维护者达成一致，助手不得单方面提出或实施。如果确有理由重开这个话题，先开 Issue。
+## 协议与输入状态
 
-## 跨仓库改动
+- Windows 线格式、opcode、语音分帧和主连接协商以 Engine `contracts/` 为唯一实现。
+  已发布 opcode 不复用或重排；兼容路径必须有实测。
+- WebMessage 类型、payload 和窗口范围以 Engine `contracts/webview/messages.json` 为准，
+  生成绑定并校验双方；页面只表达用户动作和展示，不复制候选选择、调频或配置持久化。
+- 输入行为归 Engine，平台层负责吃键、焦点与插入文本。异步结果必须重新验证会话和 composition 代次。
+- 日志和测试数据不得包含用户真实输入、令牌、真实手机号、地址或私人姓名。
 
-同一批改动横跨多个仓库时，按依赖顺序落地，并且**先合上游、再把下游的 gitlink 指向合并后的默认分支提交**，不要指向 PR 分支上的 commit。指向未合并的 commit 会让下游的默认分支引用一段随时可能被 rebase 或废弃的历史。
+## 数据与文档
 
-MSIME-Windows 的 `scripts/product_lock.py verify-published` 会在发布路径上拒绝任何无法从各自默认分支到达的锁定提交。其它仓库把引擎作为 gitlink 而非锁条目，没有等价检查，需要人工确认。
+- 发布数据源 commit 与移动构建工具 commit 分别记录，工具 gitlink 不能冒充已下载数据的来源。
+- Dict 的公开产品入口为 `build_profile.py`，桌面和移动规格由 Dict 维护，消费者不调用内部 stage。
+- 数据格式 1 的全拼分表：1–7 音节为 `tbl_{N}_{首字母}`，≥8 为 `tbl_others_{首字母}`。
+  查询、建库、设置写入和升级回放必须一致；禁止生成 `tbl_8_*`。权威定义在 Engine `contracts/dictionary/format.json`，Dict 通过固定契约调用公共 API。
+- 基础数据升级必须先验证完整性、来源、格式和摘要，再切换；保留用户词库回放的事务与失败恢复。
+- 日语模型必须带 Mozc 授权文件；所有外部数据 revision 都显式固定，不使用浮动缓存冒充固定输入。
+- 用户文档只在 MSIME-Docs 编辑。MSIME-Web 维护渲染和网站专属内容；应用自身的构建/API 文档仍归各仓。
 
-## 结论要有证据
+## 工作与验证
 
-不要在没有干净基线的情况下下结论。同一个现象先确认它是否只在当前分支发生——很多时候默认分支上也是坏的，那说明与手上的改动无关。
-
-判断某个环境或版本上是否成立时，装一个真的来跑，不要靠印象。`ast.parse(feature_version=...)` 之类的近似手段对 f-string 等语法不构成真实约束。
+只暂存本任务的显式路径；禁止 `git add -A` / `git add .` 混入其他会话或构建产物。
+遵循当地风格，不做全量格式化。提交采用 `type(scope): 摘要`，不附加自动生成标记。
+PR 说明实际变更、验证命令和结果；没有执行的原生宿主、安装或发布验证不得写成通过。
+下结论前先建立干净基线。同一现象要先确认它是否只在当前分支发生——默认分支上往往也是坏的，
+那说明与手上的改动无关。判断某个环境或版本上是否成立时装一个真的来跑，近似手段
+（例如用 `ast.parse(feature_version=...)` 推断 f-string 语法下限）不构成证据。
