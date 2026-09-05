@@ -22,10 +22,26 @@ TSF、COM、HWND、DPI 与 uiAccess 规则不适用于 Apple/Linux 或纯引擎�
 ## 跨仓变更
 
 - 修改共享接口时先更新权威实现及兼容性测试，再更新消费者固定版本，并在 PR 中互相链接。
+- 上游先合，再把下游 gitlink 指向合并后的默认分支提交，不指向 PR 分支上的 commit。
+  指向未合并的 commit 会让下游默认分支引用一段随时可能被 rebase 或废弃的历史。
 - Windows 产品输入由 `MSIME-Windows/product-lock.json` 固定到 commit 和数据摘要；
   Server、TSF、UiHtml 的 Engine 契约必须一致。Git 子模块已固定的单仓依赖无需另起一份可漂移的锁。
 - 通过组合 CI 验证实际发布输入。单仓编译通过不等价于产品兼容；Windows 要覆盖 x86/x64 客户端。
 - 保持 Windows DLL/Server 进程隔离；是否合仓取决于维护边界，不应通过合仓替代协议和产物契约。
+
+## 版本号
+
+三个前端一律使用语义化版本，不使用日历版本。各仓维护自己的 semver 序列，由 release-please 的
+`simple` 策略从 conventional commits 推进。
+
+这条是已经付出过代价的结论，不是风格偏好。2026-09-05 曾把三端统一切到 `2026.9.0`，当天回退：
+release-please 没有 CalVer 策略，只能手工重置序列并钉死 `always-bump-patch`，而它据以生成
+changelog 的序列一旦与 tag 历史脱节，就会把早已发布的功能重写成一整条新版本记录（Linux 64 行、
+Apple 158 行）。更不可逆的是版本号本身——`v2026.9.1` 发布约二十分钟即删，但 dpkg 和 rpm 认为
+`2026.9.1 > 0.7.0`，那个窗口里装过的用户不引入永久 epoch 前缀就收不到升级。
+
+版本方案属于跨仓库契约，按 [GOVERNANCE.md](GOVERNANCE.md) 需要受影响的维护者达成一致，
+助手不得单方面提出或实施；要重开这个话题先开 Issue。
 
 ## 协议与输入状态
 
@@ -51,3 +67,6 @@ TSF、COM、HWND、DPI 与 uiAccess 规则不适用于 Apple/Linux 或纯引擎�
 只暂存本任务的显式路径；禁止 `git add -A` / `git add .` 混入其他会话或构建产物。
 遵循当地风格，不做全量格式化。提交采用 `type(scope): 摘要`，不附加自动生成标记。
 PR 说明实际变更、验证命令和结果；没有执行的原生宿主、安装或发布验证不得写成通过。
+下结论前先建立干净基线。同一现象要先确认它是否只在当前分支发生——默认分支上往往也是坏的，
+那说明与手上的改动无关。判断某个环境或版本上是否成立时装一个真的来跑，近似手段
+（例如用 `ast.parse(feature_version=...)` 推断 f-string 语法下限）不构成证据。
