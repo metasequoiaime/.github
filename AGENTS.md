@@ -8,11 +8,11 @@ TSF、COM、HWND、DPI 与 uiAccess 规则不适用于 Apple/Linux 或纯引擎�
 
 | 仓库 | 权威职责 | 依赖关系 |
 |---|---|---|
-| MSIME-Engine | 平台无关输入行为、候选、学习、查询/回放与共享协议定义 | 不依赖任何平台前端或 UI |
+| MSIME-Engine | 平台无关输入行为、候选、学习、共享协议、词库生产与公共语音模块 | 不依赖任何平台前端或 UI |
 | MSIME-Windows | TSF 宿主适配、焦点、按键预判与文档 edit session | 运行时经管道访问 Server；只消费 Engine 契约头 |
 | MSIME-Server | Windows 引擎进程、配置、平台服务与原生窗口宿主 | Engine、通用 MSIME-UI、UiHtml 页面 |
-| MSIME-Apple / MSIME-Linux | InputMethodKit/iOS、IBus 平台适配 | Engine 输入会话、Dict 数据、HelpCode 数据 |
-| MSIME-Dict / MSIME-HelpCode | 可追溯的基础词库产品、辅助码 | 数据生产者；不包含平台 UI 逻辑 |
+| MSIME-Apple / MSIME-Linux | InputMethodKit/iOS、IBus 平台适配 | Engine 输入会话、固定发布词库、同一 Engine 中的辅助码与公共语音接口 |
+| MSIME-Dict / MSIME-CustomDict / MSIME-HelpCode / MetasequoiaVoiceInput | 合仓前的历史与已发布版本入口 | 当前源码分别位于 Engine 的 dictionary/、dictionary/custom/、helpcode/、voice/ |
 | MSIME-UiHtml | Windows WebView 页面与样式 | Engine Web 消息契约；无独立候选/学习状态机 |
 | MSIME-UI | 可复用的原生 GUI 基础设施 | 不依赖输入法业务、Server 全局变量或字典 |
 | MSIME-Installer | Windows 部署、注册与升级回放编排 | 消费 Windows 锁定组合的产物 |
@@ -55,9 +55,10 @@ Apple 158 行）。更不可逆的是版本号本身——`v2026.9.1` 发布约�
 ## 数据与文档
 
 - 发布数据源 commit 与移动构建工具 commit 分别记录，工具 gitlink 不能冒充已下载数据的来源。
-- Dict 的公开产品入口为 `build_profile.py`，桌面和移动规格由 Dict 维护，消费者不调用内部 stage。
+- Engine 的公开词库入口为根 `build_profile.py`，桌面和移动规格在 `dictionary/` 维护，消费者不调用内部 stage。词库通过 Engine 的 `dict-*` release 发布，历史 Dict release 保持不可变。
+- 公共语音接口在 Engine `voice/`，按需链接 Voice、VoiceCapture 和 VoiceWhisper。平台负责麦克风权限、凭据保存、焦点、原生提示和最终文本提交；公共库不依赖平台前端。
 - 数据格式 1 的全拼分表：1–7 音节为 `tbl_{N}_{首字母}`，≥8 为 `tbl_others_{首字母}`。
-  查询、建库、设置写入和升级回放必须一致；禁止生成 `tbl_8_*`。权威定义在 Engine `contracts/dictionary/format.json`，Dict 通过固定契约调用公共 API。
+  查询、建库、设置写入和升级回放必须一致；禁止生成 `tbl_8_*`。权威定义在 Engine `contracts/dictionary/format.json`，同仓构建器通过该契约调用公共 API。
 - 基础数据升级必须先验证完整性、来源、格式和摘要，再切换；保留用户词库回放的事务与失败恢复。
 - 日语模型必须带 Mozc 授权文件；所有外部数据 revision 都显式固定，不使用浮动缓存冒充固定输入。
 - 用户文档只在 MSIME-Docs 编辑。MSIME-Web 维护渲染和网站专属内容；应用自身的构建/API 文档仍归各仓。
