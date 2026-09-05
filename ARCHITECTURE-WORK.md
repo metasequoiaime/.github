@@ -1,62 +1,72 @@
 # 跨仓架构改造实施记录
 
-用户目标：按架构审查中的优先级全部处理。工作分支统一为 `architecture/product-contracts`。
+目标：按架构审查优先级完成改造，并交付可审查的跨仓 PR。此记录以 2026-09-06 的实际实现和验证为准；早期工作已被后续提交替代。
 
-## 完成条件
+## 架构关系
 
-1. **发布组合**：Windows 的全部一方依赖固定到 commit，数据固定到版本和摘要；构建、打包、重建使用同一组合；安装包和 Release 带可追溯清单；验证错配与损坏拒绝路径。
-2. **跨仓契约**：IPC 定义单一来源；主协议版本/能力握手覆盖升级兼容；Web 消息使用共享定义和双方校验；产品集成 CI 验证固定组合，包含 x86/x64。
-3. **共享输入行为**：Windows 与 Apple/Linux 共用输入会话能力；候选选择、组词学习、本地模式等重复逻辑收敛；平台焦点、吃键和文本插入保留原生适配；输入序列回归覆盖迁移。
-4. **词库产品**：格式版本、来源及引擎兼容信息显式化；Dict 统一提供桌面/移动构建规格；Apple/Linux/Windows 消费公开入口；查询、写入、回放使用一致规则且有集成验证。
-5. **UI 边界**：明确并落实各窗口长期后端、兼容后端的范围及退出条件；共享动作/展示模型避免双份业务状态；GUI 框架保持通用职责并验证必要接口。
-6. **规范与发布信息**：组织规范迁至组织级入口、平台专属规则留在平台；Docs/Web 内容权威明确；更新元数据由发布事实生成，取消手工发布版本维护。
+```mermaid
+flowchart LR
+  Windows[Windows TSF DLL] -->|版本化管道| Server[Windows Server]
+  Server --> Engine[Engine InputSession / 共享契约]
+  Apple[macOS / iOS] --> Engine
+  Linux[IBus / GTK] --> Engine
+  Server --> GUI[MSIME-UI 通用原生组件]
+  Server --> Pages[UiHtml 页面]
+  Pages -->|生成绑定| Engine
+  Dict[Dict desktop / mobile 产品] -->|版本 / 摘要 / 格式清单| Server
+  Dict --> Apple
+  Dict --> Linux
+  Dict -->|公共分表规则| Engine
+  Lock[Windows product-lock] --> Server
+  Lock --> Pages
+  Lock --> Installer[Installer]
+  Docs[Docs 用户正文] -->|固定 gitlink| Web[Web 渲染 / 导航]
+  Releases[已发布 Windows Releases] -->|校验与版本排序| Web
+```
 
-仓库合并不是前置条件：先统一版本组合、接口和集成验证，再根据实际耦合决定是否还需要物理合仓。Windows DLL/Server 进程隔离不变。
+保留 DLL/Server 进程隔离和各平台原生宿主边界。通过共同接口、固定产物和组合验证消除跨仓漂移，无需先物理合仓。
 
-## 当前状态
+## 按优先级落地
 
-- 已重新 fetch 主干，并在 12 个相关仓库创建工作分支。未触及用户原有的 `MSIME-Engine/eng/` 未跟踪目录。
-- 第 1 项实现：Windows `product-lock.json`、`scripts/product_lock.py`、发布/产品 CI、安装包清单及锁定数据集成测试。全部一方输入锁定，数据下载验证已执行。Windows 原生 CI 尚待结果。
-- 第 2 项进行中：Engine `contracts/` 已成为 IPC/语音分帧单一来源；两端已接入主版本/能力/请求关联握手，旧 DLL→新 Server 兼容，新 DLL→旧 Server 进入既有原始输入回退。Windows 只消费协议头，不链接 Engine。Web 消息契约尚未实现。
-- 尚未完成：第 2 项的 Web/实际跨进程验证、第 3–6 项及完整跨平台/产品级验证。
+| 项目 | 原问题 | 最终实现 |
+|---|---|---|
+| 1. 发布组合 | 单仓固定版本不能复现整套产品，代码与数据可能错配 | Windows 锁定全部一方源码输入及词库摘要；构建、打包、重建和来源清单使用同一组合；发布门禁验证依赖 commit 可从各仓默认分支到达 |
+| 2. 跨仓协议 | IPC/语音/Web 消息存在重复定义和隐式兼容假设 | Engine contracts 为唯一来源；主连接版本/能力/请求关联协商；TS/JS/C++ 生成 Web 绑定及双方校验；真实 Win32/x64 管道测试覆盖旧/新客户端、版本拒绝和重连 |
+| 3. 输入行为 | Server 与平台会话各自推进组合、管理组词和本地查询 | 共享 InputSession 负责候选推进、规范拼音、跨次选择学习、本地模式与在线代次；Server 仅作异步宿主适配；Apple/Linux 同步选择保留未消费后缀，宿主退出使用公共 finish_composition |
+| 4. 词库产品 | 移动压缩在平台复制，格式/来源和分表规则分散 | Dict 提供公开 desktop/mobile profile，记录来源、格式/引擎兼容、特性及摘要；建表、插入、查询、设置写入和回放共用 Engine 格式契约；SQLite 冻结为可独立分发的 DELETE journal 文件 |
+| 5. UI 边界 | 多后端持有重复候选展示业务，通用 GUI 职责不明确 | 候选视图模型共享，原生小窗口/WebView 设置页的职责和兼容退出条件明确；删除旧会话和孤立 D2D 原型；MSIME-UI 增加业务依赖防回流检查 |
+| 6. 规范与发布信息 | Windows 专属规则扩散，用户正文与更新版本重复维护 | 组织 AGENTS 归 .github，平台保留本地规则；Docs 为用户指南唯一正文，Web 固定版本渲染；更新元数据从正式发布事实生成并防止旧版重发导致回退 |
 
-当前已提交并推送工作分支：Engine `127019f`、Server `c1b8fb1`、Windows `487011c`（后续以 git 为准）。正在创建这三个仓的草稿 PR 以获得 Windows CI；无发布操作。
+## 最终提交与验证
 
-## 验证记录
+下表的 CI 对应指定提交，不把旧版本的绿勾当作新版本的证据。
 
-此处只记录实际执行的验证结果；实现意图、测试文件存在或单仓构建通过不代表产品级完成。
+| 仓库 / PR | 提交 | 实际验证 |
+|---|---|---|
+| [Engine #23](https://github.com/metasequoiaime/MSIME-Engine/pull/23) | `6bd2254` | 本地 13 项根 CTest；[三平台及共享 Web 契约 CI 全部通过](https://github.com/metasequoiaime/MSIME-Engine/actions/runs/33978274087) |
+| [Server #33](https://github.com/metasequoiaime/MSIME-Server/pull/33) | `331034d` | [最终固定 Engine 的 Windows CI 全部通过](https://github.com/metasequoiaime/MSIME-Server/actions/runs/33978299387)；先前真实词库 237 项测试和 30 组 Web 契约通过 |
+| [Windows #148](https://github.com/metasequoiaime/MSIME-Windows/pull/148) | `ce2aa1a` | 本地 13 项锁拒绝测试、契约 pin/验证器检查通过；[最终整产品 CI 全部通过](https://github.com/metasequoiaime/MSIME-Windows/actions/runs/33978351581)，包括真实 Server/词库及 Win32/x64 管道探针 |
+| [Dict #14](https://github.com/metasequoiaime/MSIME-Dict/pull/14) | `689beb7` | [CI 全部通过](https://github.com/metasequoiaime/MSIME-Dict/actions/runs/33978299424)：实际完整 desktop/mobile 构建、3 项 Python 回归、固定 Engine 消费真实产物 |
+| [Apple #248](https://github.com/metasequoiaime/MSIME-Apple/pull/248) | `3699a0b` | 本地 macOS 构建及 32 CTest、最后桥接回归、iOS 模拟器构建通过；实际发布数据获取/公开 mobile profile 通过；[原生 CI 全部通过](https://github.com/metasequoiaime/MSIME-Apple/actions/runs/33978508012) |
+| [Linux #60](https://github.com/metasequoiaime/MSIME-Linux/pull/60) | `484d24e` | [Ubuntu 24.04/26.04 × amd64/arm64 原生矩阵全部通过](https://github.com/metasequoiaime/MSIME-Linux/actions/runs/33978370911)，含 IBus、控制器、包及固定数据检查；18 项锁测试通过 |
+| [UI #6](https://github.com/metasequoiaime/MSIME-UI/pull/6) | `18260ea` | [Windows 构建、布局及依赖边界检查通过](https://github.com/metasequoiaime/MSIME-UI/actions/runs/33975171290) |
+| [UiHtml #7](https://github.com/metasequoiaime/MSIME-UiHtml/pull/7) | `1f22eef` | [构建和固定绑定检查通过](https://github.com/metasequoiaime/MSIME-UiHtml/actions/runs/33978300018)；真实浏览器 12 个静态页加载协议 v1，候选/工具栏/菜单/设置实际消息通过 |
+| [Installer #4](https://github.com/metasequoiaime/MSIME-Installer/pull/4) | `1896c3b` | [自身 CI 通过](https://github.com/metasequoiaime/MSIME-Installer/actions/runs/33977365583)；Windows 产品 CI 用该固定源码执行实际完整/轻量打包脚本，验证公共运行时、词库清单、架构资源及拒绝缺失输入 |
+| [Docs #3](https://github.com/metasequoiaime/MSIME-Docs/pull/3) | `4c48a5d` | Web 使用此固定正文生产构建通过 |
+| [Web #12](https://github.com/metasequoiaime/MSIME-Web/pull/12) | `fbe32d4` | 最终生产构建和 3 项更新元数据接受/拒绝测试通过；[PR CI](https://github.com/metasequoiaime/MSIME-Web/actions/runs/33978194242) 和 Pages 预览通过 |
+| [组织规范 #1](https://github.com/metasequoiaime/.github/pull/1) | 见 PR 最终提交 | 组织职责、平台规则、依赖顺序和本记录 |
 
-- Windows：9 项 Python 锁定输入测试通过（拒绝浮动 ref、缺失/路径逃逸资产、上下游摘要同时被替换、损坏下载覆盖、Server/TSF Engine pin 错配、清单源追溯）。
-- Windows：actionlint 检查 release.yml、ci.yml、product-ci.yml 通过；实际 dict-2026.09.05 全部资产下载并按锁定摘要核验成功，数据在 `/tmp/msime-product-data/`。
-- Engine：`cmake -S . -B build-architecture -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/opt/homebrew`，构建后 12 项 ctest 全部通过。新增契约文件格式化后单独重跑 windows_ipc_contract 通过。
-- `clang-format` 已安装，仅格式化新增 contracts 与修改文件的变更行。
-- 产品测试脚本把 Windows-only LOCALAPPDATA 和 Engine 的 METASEQUOIA_IME_DATA_DIR 指向同一临时数据根，避免借用已安装词库。
+关键行为回归：分段选择后保留剩余拼音并学习完整规范词条；取消清空组词进度；标点、快捷键透传、输入方案切换、iOS 回车/英文切换结束整段输入；无正文的临时模式不触发虚假的空文本插入；过期在线结果拒绝。实际词库消费者验证七/八/九音节的创建、查询与回放，并查询英文、快捷短语和表情。
 
-## 2026-09-05 后续进展
+验证中发现并修复：Server 将未构建的 GUI 独立测试误注册到自己的 CTest；复制 WAL 模式英文数据库后首个只读查询失败；短候选提交丢失剩余拼音；模式前缀被误作一次空提交。Linux 的 /proc 工具定位检查在原生 Linux CI 验证，本地 macOS 只运行其余可移植测试。
 
-- 第 1–2 项：Engine `9a4b0c6`、Server `40d85a4`、UiHtml `3ecfea9`、Windows `9b28445` 形成同一固定组合。草稿 PR 分别为 Engine#19、Server#30、UiHtml#4、Windows#138。
-- Windows 产品 CI `33971024770` 全部通过；真实 Server 测试（含 WebView C++ 契约）及 Win32/x64 两个真实管道探针都通过，覆盖新客户端、旧客户端、版本拒绝和重连。Server CI `33970890946` 通过。Engine CI `33970784947` 通过全部平台与 WebView 双语言契约测试。
-- Web 契约：单一 messages.json 生成 TS/JS/C++ 绑定，29 组共享夹具验证参数、消息版本、窗口范围和拒绝路径；设置页发送及接收校验，原生四个 WebView 接收入口校验；静态页面通过虚拟主机加载共享运行时。浏览器验证工具栏切换和菜单设置发送版本化消息；候选页能加载协议。
-- 产品 CI 揭示了已有跨仓测试错配：Engine 主干明确把歧义切分上限改为四音节，Server 还断言三音节。已同步 Server 测试，并在 Engine 增加四音节允许、五音节受限、手工分隔符保持的回归，现有加新增共 13 项根 ctest 通过。
-- 第 4 项进行中：Dict `78c6fce` 已提供 build_profile.py 的 desktop/mobile 公开构建，源码/格式/摘要清单、sources-lock.json 固定 Mozc，缓存按源 revision 与摘要校验。全量桌面构建、184 张全拼表约 127 万条记录、63.5 MB 日语模型及其他数据校验通过；移动产品真实构建通过。Apple 已修改为公开入口，移动构建和打包测试通过，改动尚未提交。Windows/Linux 消费新清单与四方表名统一尚未完成。
-- 第 3、5、6 项仍未实现；不得将上述进展当作整体完成。
-- 工作区曾出现当前工具链未发起的提交：Engine `797d0a9` 合并 origin/main，Server `b77a1cb` 更新切分测试，Linux 已有 product-lock。均保留并继续基于它们工作；已异步询问用户是否另有并行任务，暂未收到答复。不要重置这些改动。
+## 合并顺序与边界
 
-## 2026-09-06 收敛与复验
+1. Engine #23、UI #6、Dict #14（Dict 依赖 Engine）；Docs #3 可独立先行。
+2. Server #33、UiHtml #7、Apple #248、Linux #60、Installer #4、Web #12，遵循各 PR 链接的生产者依赖。
+3. Windows #148 最后合入整产品锁；若 squash/rebase 改变生产者 commit 的可达性，刷新并重测组合后再发布。
+4. 组织规范 #1 与上述规则同步落地。
 
-已落地的实现（验证尚未全部收齐）：
+较早的基础协议、共享格式和 Linux 数据消费改造已经合入，本表列出剩余的最终交付 PR。输入法安装、注册、PR 合并及发布没有在本任务中执行。
 
-1. Engine `1a3b259`（PR #22）：Windows 的组词推进、规范拼音进度、在线查询状态迁入公共 InputSession；保留同步命令与异步宿主各自插入时机。日期/Unicode/快捷短语/表情/颜文字/简拼算法统一到 Engine。新增长词七/八/九音节创建、查询、回放及部分选择/手工分隔符/过期在线结果回归。三平台 CI `33975124583` 全绿，根 CTest 13 项通过，Web 30 个双语言夹具通过。
-2. Server `8680f85`（PR #33）：薄适配共享 InputSession，删除旧双拼会话实现；旧配置 legacy 作为共享 Engine 别名。采用主干直接公共本地查询调用。候选内容、辅助码、源标记和翻译构成同一视图模型供双后端渲染，后端策略及退出条件明确。迁移初版真实词库 CI `33974870945` 通过；最终依赖 pin 的 `33975817130` 正在运行。
-3. Dict `c95f3b5`（PR #14）：desktop/mobile 公共入口、源 revision 锁、格式/特性/摘要/来源清单。建表、插入、索引和校验从固定 Engine 格式契约取规则。全量桌面、移动产品构建通过，CI `33975515739` 通过。追加使用固定 Engine 对实际两个产品做查询、写入与回放的消费者集成测试，尚待本地与 CI 结果。
-4. Apple `2077f2e`（PR #248）：基于最新主干的独立工作区，macOS 保留固定发布数据库，iOS 使用 `tools/MetasequoiaImeDict` 的公共 mobile profile；工具版本与已下载数据源版本分开记录，移除平台私有压缩算法。真实 107 MB 发布数据库获取及移动构建通过；15 项产品锁测试、1 项打包回归、33 项项目配置测试通过；本地 macOS app 构建和 32 CTest 通过，iOS 模拟器构建通过。原生 CI `33976146312` 尚待。
-5. Linux `08b9f73`（PR #54）：共享格式验证器按 Engine gitlink 校验，现代词库必须有格式清单，清单随数据安装；保留主干的数据 source_commit 和删除无用 Dict 源 gitlink。18 项锁测试通过；CI `33976115544` 的产品检查及两个 arm64 构建通过，amd64 尚待。
-6. UI `18260ea`（PR #6）：通用库职责和依赖防回流检查；Windows 构建/布局测试 CI `33975171290` 通过。
-7. UiHtml `29dc008`（PR #7）：与最终 Engine 契约一致，十号候选鼠标选择兼容，保留主干删除 Sciter。构建和固定绑定比较通过；12 个静态页面在真实浏览器加载协议 v1，候选点击实际发出版本化消息。
-8. Installer `ce74fd7`（PR #4）：完整/轻量包复制公共 WebView runtime，完整包附词库清单。新增无安装的实际打包脚本回归，由 Windows 产品 CI 检查锁定 Installer。
-9. Windows `56db4ef`（PR #148）：最终组合锁定上述 Engine/Server/UiHtml/UI/Installer，数据仍为已校验的既有发布；现代发布必须锁清单、旧版仅明确保留 dict-2026.09.05；13 项锁测试、固定契约核验、actionlint 通过。最终组合 CI `33976266040` 尚待真实 Server、两种 DLL 及打包结果。
-10. Docs `4c48a5d`（PR #3）为用户指南唯一正文；Web `da89a28`（PR #12）在独立工作区基于最新页面改版接入固定 Docs，并加强主干已合入的更新信息自动化：版本排序、正式安装包与所属仓库校验。生产构建和 3 项拒绝测试通过，CI 与 Cloudflare Pages 预览通过。没有另建发布渠道。
-
-本任务未执行 PR 合并、发布或输入法注册/安装。较早的 Engine#19、Server#30、Windows#138、UiHtml#4 已由其他操作合入；各仓中并行的 CalVer、许可、布局等变更已保留。Apple/Web 原始目录被其他任务切回主干，因此后续分别在 `/tmp/msime-architecture-worktrees/apple` 和 `/tmp/msime-architecture-worktrees/web` 修改。不要将它们的原始工作目录切换回本任务分支。
-
-当前仍需：收齐最终 CI、确认所有 PR 的最终描述和依赖顺序、补齐公共数据消费者集成验证、提交组织规范与最后验证记录。整体目标仍未完成。
+完成状态：六项实现、对应回归和最终跨平台/整产品 CI 均已通过；12 个最终 PR 已提供实际验证证据与相互依赖顺序，可进入审查与合并。
