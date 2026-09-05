@@ -40,3 +40,5 @@
 ## 归属
 
 本准则改编自 Contributor Covenant 2.1 版，原文见 <https://www.contributor-covenant.org/version/2/1/code_of_conduct/>。这是一份改编版本，不是官方中文译本。
+
+关于怎么参与本项目，见[贡献指南](CONTRIBUTING.md)与[招募开源开发者](RECRUITING.md)。

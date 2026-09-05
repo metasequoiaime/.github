@@ -8,8 +8,10 @@
 | --- | --- | --- |
 | Windows 10 / 11 | 公开内测 | 纯 TSF + 常驻 Server |
 | macOS 12+ | 已发布 | InputMethodKit + AppKit |
-| Linux | 开发中 | IBus |
-| iOS | 开发中 | 键盘扩展 |
+| Linux | 已发布 | IBus，另含 GTK 设置程序 |
+| iOS | 开发中 | 宿主 App + 键盘扩展 |
+
+安装包在各平台前端仓库的 Releases 页，下载与安装说明见[官网](https://msime.app/download/)。
 
 ## 为什么开源
 
@@ -30,7 +32,12 @@
 
 ## 参与贡献
 
-长期招募开源贡献者，方向不限于写代码——词库、文档、本地化、兼容性测试、教程同样算贡献。详见[招募开源开发者](https://github.com/metasequoiaime/.github/blob/main/RECRUITING.md)。
+长期招募开源贡献者，方向不限于写代码——词库、文档、本地化、兼容性测试、教程同样算贡献。
+
+- [招募开源开发者](https://github.com/metasequoiaime/.github/blob/main/RECRUITING.md)：按方向列出可以认领的事情，含不需要写代码的部分
+- [贡献指南](https://github.com/metasequoiaime/.github/blob/main/CONTRIBUTING.md)：怎么找对仓库、Issue 标签的含义、PR 的要求
+- [项目治理](https://github.com/metasequoiaime/.github/blob/main/GOVERNANCE.md)：谁负责哪一块、怎么拿到更多权限
+- [行为准则](https://github.com/metasequoiaime/.github/blob/main/CODE_OF_CONDUCT.md)
 
 ## 社区
 
