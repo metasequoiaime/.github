@@ -37,7 +37,3 @@
 Telegram <https://t.me/msimegroup> · QQ 群 829919142 · 邮箱 metasequoiaime@gmail.com · 问题与功能讨论请走对应仓库的 Issues 和 Discussions。
 
 提交 Issue、PR、截图或日志前，请确认其中不含 API Key 等敏感信息。
-
----
-
-**English** — Metasequoia IME is an open-source Chinese input method, GPL-3.0 and fully open source. Windows is in open beta, macOS is released, Linux (IBus) and iOS are in development; all platforms share one C++ composition engine with native UI per platform. Contributions are welcome and not limited to code — see [the call for contributors](https://github.com/metasequoiaime/.github/blob/main/RECRUITING.md) (in Chinese), or open an issue in the relevant repository if you prefer English.
