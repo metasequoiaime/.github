@@ -9,13 +9,8 @@ TSF、COM、HWND、DPI 与 uiAccess 规则不适用于 Apple/Linux 或纯引擎�
 | 仓库 | 权威职责 | 依赖关系 |
 |---|---|---|
 | MSIME-Engine | 平台无关输入行为、候选、学习、共享协议、词库生产与公共语音模块 | 不依赖任何平台前端或 UI |
-| MSIME-Windows | TSF 宿主适配、焦点、按键预判与文档 edit session | 运行时经管道访问 Server；只消费 Engine 契约头 |
-| MSIME-Server | Windows 引擎进程、配置、平台服务与原生窗口宿主 | Engine、通用 MSIME-UI、UiHtml 页面 |
-| MSIME-Apple / MSIME-Linux | InputMethodKit/iOS、IBus 平台适配 | Engine 输入会话、固定发布词库、同一 Engine 中的辅助码与公共语音接口 |
-| MSIME-Dict / MSIME-CustomDict / MSIME-HelpCode / MetasequoiaVoiceInput | 合仓前的历史与已发布版本入口 | 当前源码分别位于 Engine 的 dictionary/、dictionary/custom/、helpcode/、voice/ |
-| MSIME-UiHtml | Windows WebView 页面与样式 | Engine Web 消息契约；无独立候选/学习状态机 |
-| MSIME-UI | 可复用的原生 GUI 基础设施 | 不依赖输入法业务、Server 全局变量或字典 |
-| MSIME-Installer | Windows 部署、注册与升级回放编排 | 消费 Windows 锁定组合的产物 |
+| MSIME-Windows | Windows 平台产品：TSF、Server、GUI、页面、安装器 | windows/、server/、ui/、ui-html/、installer/；vendor 中固定同一 Engine |
+| MSIME-Apple / MSIME-Linux | InputMethodKit/iOS、IBus 平台适配 | Engine 输入会话、固定发布词库与同源辅助码；公共语音通过 Engine 接入 |
 | MSIME-Docs | 用户文档正文与产品架构说明 | 文档内容权威 |
 | MSIME-Web | 官网呈现、导航、下载与文档渲染 | 固定 Docs 内容版本；更新信息来自已发布 Release |
 
@@ -25,9 +20,18 @@ TSF、COM、HWND、DPI 与 uiAccess 规则不适用于 Apple/Linux 或纯引擎�
 - 上游先合，再把下游 gitlink 指向合并后的默认分支提交，不指向 PR 分支上的 commit。
   指向未合并的 commit 会让下游默认分支引用一段随时可能被 rebase 或废弃的历史。
 - Windows 产品输入由 `MSIME-Windows/product-lock.json` 固定到 commit 和数据摘要；
-  Server、TSF、UiHtml 的 Engine 契约必须一致。Git 子模块已固定的单仓依赖无需另起一份可漂移的锁。
+  锁定仓外 Engine 和词库发布资产；本仓各组件由同一个 Windows 提交固定。Server、TSF、页面共享 vendor 中的 Engine 契约，页面生成副本必须通过同步检查。
 - 通过组合 CI 验证实际发布输入。单仓编译通过不等价于产品兼容；Windows 要覆盖 x86/x64 客户端。
 - 保持 Windows DLL/Server 进程隔离；是否合仓取决于维护边界，不应通过合仓替代协议和产物契约。
+
+## Windows 内部边界
+
+- `windows/` 是注入宿主的 TSF DLL；`server/` 是独立常驻进程，两者继续通过版本化管道通信。
+- `ui/` 是通用 GUI 库，不依赖输入法业务、Server 全局状态或词库。原生窗口由 `server/` 拥有，页面由 `ui-html/` 维护。
+- `installer/` 消费本仓产物；`log/` 和 `experiments/tsf-edit-control/` 保留日志库与编辑控件实验。
+- 各组件有自己的构建入口；DLL 静态 CRT 与 Server 动态 CRT 的构建树保持独立。
+
+旧 Dict、CustomDict、HelpCode、VoiceInput 已归档，当前源码分别在 Engine 的 `dictionary/`、`dictionary/custom/`、`helpcode/`、`voice/`。旧 Server、UI、UiHtml、Installer、Log、TsfEditControl 也已归档，维护入口是 Windows 对应目录。历史 Release 和提交继续保留。
 
 ## 版本号
 

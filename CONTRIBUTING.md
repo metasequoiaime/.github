@@ -16,8 +16,8 @@
 | 候选词顺序、组词、联想、纠错不对 | [MSIME-Engine](https://github.com/metasequoiaime/MSIME-Engine) |
 | 某个词打不出来、拼音或权重错了 | [MSIME-Engine/dictionary](https://github.com/metasequoiaime/MSIME-Engine/tree/main/dictionary) |
 | 辅助码筛选结果不对 | [MSIME-Engine/helpcode](https://github.com/metasequoiaime/MSIME-Engine/tree/main/helpcode) |
-| Windows 上设置界面、托盘菜单、工具栏的行为 | [MSIME-Server](https://github.com/metasequoiaime/MSIME-Server) |
-| 安装、升级、卸载失败 | [MSIME-Installer](https://github.com/metasequoiaime/MSIME-Installer) |
+| Windows 上设置界面、托盘菜单、工具栏的行为 | [Windows/server](https://github.com/metasequoiaime/MSIME-Windows/tree/main/server) |
+| 安装、升级、卸载失败 | [Windows/installer](https://github.com/metasequoiaime/MSIME-Windows/tree/main/installer) |
 
 拿不准就提到你遇到问题的那个仓库，维护者会转移，不要因为不确定而不提。
 

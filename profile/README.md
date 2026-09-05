@@ -19,15 +19,15 @@
 
 ## 主要仓库
 
-- [MSIME-Windows](https://github.com/metasequoiaime/MSIME-Windows) — Windows TSF 前端
+- [MSIME-Windows](https://github.com/metasequoiaime/MSIME-Windows) — Windows 平台产品（TSF、Server、GUI、页面与安装器）
 - [MSIME-Apple](https://github.com/metasequoiaime/MSIME-Apple) — macOS / iOS 原生前端
 - [MSIME-Linux](https://github.com/metasequoiaime/MSIME-Linux) — IBus 前端与桌面工具
 - [MSIME-Engine](https://github.com/metasequoiaime/MSIME-Engine) — 公共输入引擎、词库构建与数据、辅助码、语音模块
-- [MSIME-Server](https://github.com/metasequoiaime/MSIME-Server) — Windows 常驻后端
-- [MSIME-UI](https://github.com/metasequoiaime/MSIME-UI) — 自研原生 GUI 框架（Win32 + Direct2D）
+- [Windows/server](https://github.com/metasequoiaime/MSIME-Windows/tree/main/server) — Windows 常驻后端
+- [Windows/ui](https://github.com/metasequoiaime/MSIME-Windows/tree/main/ui) — 自研原生 GUI 框架（Win32 + Direct2D）
 - [MSIME-Docs](https://github.com/metasequoiaime/MSIME-Docs) — 文档（施工中）
 
-其余仓库（n-gram 联想、安装器、皮肤示例等）见下方仓库列表。
+其余仓库（n-gram 联想、皮肤示例等）见下方仓库列表。
 
 ## 参与贡献
 
