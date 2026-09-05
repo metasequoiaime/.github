@@ -13,7 +13,7 @@
 | 某个程序里按键、上屏、光标、候选窗位置不对 | 对应平台前端：[MSIME-Windows](https://github.com/metasequoiaime/MSIME-Windows) / [MSIME-Apple](https://github.com/metasequoiaime/MSIME-Apple) / [MSIME-Linux](https://github.com/metasequoiaime/MSIME-Linux) |
 | 候选词顺序、组词、联想、纠错不对 | [MSIME-Engine](https://github.com/metasequoiaime/MSIME-Engine) |
 | 某个词打不出来、拼音或权重错了 | [MSIME-Dict](https://github.com/metasequoiaime/MSIME-Dict) |
-| 辅助码筛选结果不对 | [MetasequoiaImeHelpCode](https://github.com/metasequoiaime/MetasequoiaImeHelpCode) |
+| 辅助码筛选结果不对 | [MSIME-HelpCode](https://github.com/metasequoiaime/MSIME-HelpCode) |
 | Windows 上设置界面、托盘菜单、工具栏的行为 | [MSIME-Server](https://github.com/metasequoiaime/MSIME-Server) |
 | 安装、升级、卸载失败 | [msime-installer](https://github.com/metasequoiaime/msime-installer) |
 
