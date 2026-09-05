@@ -54,7 +54,7 @@ flowchart LR
 | [Installer #4](https://github.com/metasequoiaime/MSIME-Installer/pull/4) | `1896c3b` | [自身 CI 通过](https://github.com/metasequoiaime/MSIME-Installer/actions/runs/33977365583)；Windows 产品 CI 用该固定源码执行实际完整/轻量打包脚本，验证公共运行时、词库清单、架构资源及拒绝缺失输入 |
 | [Docs #3](https://github.com/metasequoiaime/MSIME-Docs/pull/3) | `4c48a5d` | Web 使用此固定正文生产构建通过 |
 | [Web #12](https://github.com/metasequoiaime/MSIME-Web/pull/12) | `fbe32d4` | 最终生产构建和 3 项更新元数据接受/拒绝测试通过；[PR CI](https://github.com/metasequoiaime/MSIME-Web/actions/runs/33978194242) 和 Pages 预览通过 |
-| [组织规范 #1](https://github.com/metasequoiaime/.github/pull/1) | 见 PR 最终提交 | 组织职责、平台规则、依赖顺序和本记录 |
+| [实施记录 #3](https://github.com/metasequoiaime/.github/pull/3) | 见 PR 最终提交 | 组织规范已在 #1 合入；本 PR 汇总依赖顺序和验证记录 |
 
 关键行为回归：分段选择后保留剩余拼音并学习完整规范词条；取消清空组词进度；标点、快捷键透传、输入方案切换、iOS 回车/英文切换结束整段输入；无正文的临时模式不触发虚假的空文本插入；过期在线结果拒绝。实际词库消费者验证七/八/九音节的创建、查询与回放，并查询英文、快捷短语和表情。
 
@@ -65,7 +65,7 @@ flowchart LR
 1. Engine #23、UI #6、Dict #14（Dict 依赖 Engine）；Docs #3 可独立先行。
 2. Server #33、UiHtml #7、Apple #248、Linux #60、Installer #4、Web #12，遵循各 PR 链接的生产者依赖。
 3. Windows #148 最后合入整产品锁；若 squash/rebase 改变生产者 commit 的可达性，刷新并重测组合后再发布。
-4. 组织规范 #1 与上述规则同步落地。
+4. 组织规范 #1 已合入；实施记录 #3 可独立审查。
 
 较早的基础协议、共享格式和 Linux 数据消费改造已经合入，本表列出剩余的最终交付 PR。输入法安装、注册、PR 合并及发布没有在本任务中执行。
 
