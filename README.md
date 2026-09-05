@@ -9,6 +9,7 @@
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | 组织级贡献指南，对所有仓库生效。 |
 | [`SECURITY.md`](SECURITY.md) | 组织级安全策略与私下上报渠道。 |
 | [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) | 组织级行为准则与举报渠道。 |
+| [`GOVERNANCE.md`](GOVERNANCE.md) | 维护分布、决策方式与权限层级。 |
 
 GitHub 会把放在这里的 `CONTRIBUTING.md`、`SECURITY.md`、`ISSUE_TEMPLATE/`、`PULL_REQUEST_TEMPLATE.md` 等文件，作为组织下所有仓库的默认值——只有当某个仓库自己没有同名文件时才会套用。MSIME-Linux 的 `CONTRIBUTING.md`、MSIME-Apple 与 MSIME-Linux 的 `SECURITY.md` 都是仓库自己的版本，不受这里影响。
 
