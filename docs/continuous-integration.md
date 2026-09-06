@@ -10,6 +10,8 @@
 - Actions 使用完整提交 SHA；Dependabot 通过 PR 更新。依赖更新须通过相同的构建测试，不能仅凭机器人身份绕过门禁。
 - CI 默认只读、使用托管 runner，设定超时并取消过时的同事件运行。发布流程按其实际用途单独保留写权限。
 
+`Organization CI coverage` 每周检查组织当前所有未归档公开仓库的默认分支，发现缺失的功能 CI、质量检查、CodeQL、Dependabot 配置或被停用的工作流。可以手动运行，或用 `python tools/audit_repositories.py` 在已登录 gh CLI 的环境复现。它检查覆盖和启用状态；工作流内的实际测试与扫描结果仍由各仓负责。
+
 ## 各仓库的功能验证
 
 | 仓库 | 自动验证 |
@@ -35,6 +37,8 @@ Windows 正式发布继续手动触发：签名次数有成本，不将每次合
 新检查首次运行通过后再加入分支 ruleset 的 required checks，使用 GitHub 实际显示的检查名；不能把没有运行过或会被路径过滤永久跳过的任务设为必需。main 应禁止强推和删除，并要求 PR 及通过检查；维护者的既有 bypass 规则需保留。
 
 维护者应启用 dependency graph、Dependabot alerts/security updates、secret scanning 和 push protection。工作流文件无法代替这些 GitHub 仓库设置。CodeQL 上传成功及 Settings 的实际状态是启用成功的证据。
+
+MSIME-Web 的现有更新清单任务在运行元数据回归测试后，直接提交生成的 `public/update.json`。GitHub 不允许把内置 Actions app 添加为该仓库 ruleset 的 bypass actor；当前仅为它启用禁止删除和强推的历史保护，保留清单同步与 Cloudflare Pages 发布。其余代码的 PR 仍执行构建、依赖审查和扫描。若以后要求网站所有写入也必须通过 PR，需要先把清单同步迁移到经过 CI 的机器人 PR 流程，不能直接加规则把自动更新堵住。
 
 ## 本地复现
 
