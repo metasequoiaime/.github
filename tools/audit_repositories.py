@@ -1,10 +1,12 @@
 """Audit the versioned CI baseline in every maintained public organization repository."""
 import argparse
+import base64
 import json
 import subprocess
 import sys
 from pathlib import Path
-from repository_health import audit_repository
+from product_locks import ENGINE_SUBMODULE_PATH, PLATFORM_REPOSITORIES, audit_product_locks
+from repository_health import audit_repository, organization_problems
 from urllib.parse import quote
 
 
@@ -16,6 +18,38 @@ def api(path, *arguments):
     if result.returncode:
         raise RuntimeError(f'{path}: {result.stderr.strip()}')
     return json.loads(result.stdout) if result.stdout.strip() else None
+
+
+def contents(repository, path):
+    """Return the decoded file at `path`, or None when the repository does not carry it."""
+    try:
+        entry = api(f'repos/{repository}/contents/{path}')
+    except RuntimeError:
+        return None
+    return base64.b64decode(entry['content']) if entry.get('type') == 'file' else None
+
+
+def gitlink(repository, path):
+    """Return the commit a submodule points at, or None when the path is absent."""
+    try:
+        entry = api(f'repos/{repository}/contents/{path}')
+    except RuntimeError:
+        return None
+    return entry['sha'] if entry.get('type') == 'submodule' else None
+
+
+def product_lock_findings(organization):
+    locks, pins = {}, {}
+    for name in PLATFORM_REPOSITORIES:
+        repository = f'{organization}/{name}'
+        raw = contents(repository, 'product-lock.json')
+        if raw is None:
+            return [f'{name}: product-lock.json is unreadable'], []
+        locks[name] = json.loads(raw)
+        pins[name] = gitlink(repository, ENGINE_SUBMODULE_PATH)
+    engine = api(f'repos/{organization}/MSIME-Engine/commits?per_page=100', '--paginate', '--slurp')
+    history = [commit['sha'] for page in engine for commit in page]
+    return audit_product_locks(locks, pins, history)
 
 
 def audit(organization, health=False, report=None):
@@ -55,8 +89,24 @@ def audit(organization, health=False, report=None):
         results.append({"repository": name, "problems": failures[start:]})
     if not count:
         failures.append('No maintained public repositories returned; refusing an empty audit')
+
+    notes = []
+    try:
+        lock_problems, notes = product_lock_findings(organization)
+        failures.extend(lock_problems)
+    except (RuntimeError, KeyError, ValueError, TypeError) as error:
+        failures.append(f'product locks: {error}')
+    if health:
+        try:
+            failures.extend(organization_problems(api(f'orgs/{quote(organization, safe="")}')))
+        except (RuntimeError, KeyError, ValueError, TypeError) as error:
+            failures.append(f'organization settings: {error}')
+    for note in notes:
+        print(f'NOTE: {note}')
+
     if report:
-        Path(report).write_text(json.dumps({'repositories': results, 'problems': failures}, indent=2) + '\n')
+        Path(report).write_text(json.dumps(
+            {'repositories': results, 'problems': failures, 'notes': notes}, indent=2) + '\n')
     for failure in failures:
         print(f'ERROR: {failure}', file=sys.stderr)
     print(f'Inspected {count} maintained public repositories; {len(failures)} problems')
