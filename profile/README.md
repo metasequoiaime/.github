@@ -57,6 +57,8 @@
 
 ## 社区
 
-Telegram <https://t.me/msimegroup> · QQ 群 829919142 · 邮箱 metasequoiaime@gmail.com · 问题与功能讨论请走对应仓库的 Issues 和 Discussions。
+Telegram <https://t.me/msimegroup> · QQ 群 829919142 · 邮箱 metasequoiaime@gmail.com
+
+Bug 与功能建议请提到对应平台仓库的 Issues；开放式的使用讨论集中在 [MSIME-Windows 的 Discussions](https://github.com/metasequoiaime/MSIME-Windows/discussions)（其余仓库不单独开，避免分散到几个空板块）。**疑似安全漏洞不要走以上任何一个公开渠道**，按 [SECURITY.md](https://github.com/metasequoiaime/.github/blob/main/SECURITY.md) 私下上报。
 
 提交 Issue、PR、截图或日志前，请确认其中不含 API Key 等敏感信息。
