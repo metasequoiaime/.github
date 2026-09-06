@@ -81,7 +81,7 @@ def main():
                         help="Parent of the Engine, Apple and Linux repositories")
     parser.add_argument("--engine-ref", required=True,
                         help="Engine commit/ref to test; never changes platform pins")
-    parser.add_argument("--platform-ref", default="origin/main",
+    parser.add_argument("--platform-ref", default="origin/develop",
                         help="Committed ref to read in both platform repositories")
     parser.add_argument("--prefix-path", help="Optional CMake dependency prefix")
     parser.add_argument("--parallel", type=int, default=4)

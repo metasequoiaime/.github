@@ -6,7 +6,7 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
 from repository_health import (ORGANIZATION_EXPECTATIONS, organization_problems, protection_problems,
-                               security_problems, workflow_problems)
+                               security_problems, workflow_problems, workflow_schedule)
 
 NOW = datetime(2026, 9, 6, tzinfo=timezone.utc)
 
@@ -46,6 +46,14 @@ class WorkflowHealth(unittest.TestCase):
     def test_new_workflow_gets_bounded_setup_window(self):
         workflow = dict(self.workflow, created_at=(NOW-timedelta(hours=1)).isoformat())
         self.assertEqual(workflow_problems(workflow, [], NOW, 48), [])
+
+    def test_policy_entry_may_name_the_branch_a_workflow_runs_on(self):
+        self.assertEqual(workflow_schedule(None, 'develop'), ('develop', None))
+        self.assertEqual(workflow_schedule(240, 'develop'), ('develop', 240))
+        self.assertEqual(workflow_schedule({'branch': 'main', 'cadence': None}, 'develop'), ('main', None))
+        self.assertEqual(workflow_schedule({'cadence': 48}, 'develop'), ('develop', 48))
+        problems = workflow_problems(self.workflow, [], NOW, None, 'main')
+        self.assertTrue(any('no runs on main' in problem for problem in problems))
 
 
 class ProtectionHealth(unittest.TestCase):

@@ -8,7 +8,19 @@ def timestamp(value):
     return datetime.fromisoformat(value.replace('Z', '+00:00'))
 
 
-def workflow_problems(workflow, runs, now, max_age_hours=None):
+def workflow_schedule(entry, default_branch):
+    """A policy entry is a cadence in hours, or a mapping that also names the branch it runs on.
+
+    The code repositories develop on `develop` and release from `main`, so a release workflow has no
+    runs at all on the default branch. Auditing it there would report a permanently missing workflow
+    for the one path that must not go unwatched.
+    """
+    if isinstance(entry, dict):
+        return entry.get('branch') or default_branch, entry.get('cadence')
+    return default_branch, entry
+
+
+def workflow_problems(workflow, runs, now, max_age_hours=None, branch='the default branch'):
     problems = []
     name = workflow['path']
     if workflow['state'] != 'active':
@@ -16,7 +28,7 @@ def workflow_problems(workflow, runs, now, max_age_hours=None):
     runs = sorted(runs, key=lambda r: r['created_at'], reverse=True)
     if not runs:
         if now - timestamp(workflow['created_at']) > timedelta(hours=24):
-            problems.append(f'{name}: no default-branch runs after the 24-hour setup window')
+            problems.append(f'{name}: no runs on {branch} after the 24-hour setup window')
         return problems
     if max_age_hours and now - timestamp(runs[0]['created_at']) > timedelta(hours=max_age_hours):
         problems.append(f'{name}: no run in the last {max_age_hours} hours')
@@ -116,12 +128,13 @@ def audit_repository(repository, api, policy, now=None):
     problems.extend(security_problems(settings, reporting, configuration, True))
     workflows = api(f'{prefix}/actions/workflows?per_page=100')['workflows']
     by_path = {w['path'].removeprefix('.github/workflows/'): w for w in workflows}
-    for path, cadence in policy['workflows'].items():
+    for path, entry in policy['workflows'].items():
         workflow = by_path.get(path)
         if workflow is None:
             problems.append(f'{path}: missing registered workflow')
             continue
-        runs = api(f'{prefix}/actions/workflows/{workflow["id"]}/runs?branch={branch}&per_page=100')['workflow_runs']
+        target, cadence = workflow_schedule(entry, branch)
+        runs = api(f'{prefix}/actions/workflows/{workflow["id"]}/runs?branch={target}&per_page=100')['workflow_runs']
         runs = [r for r in runs if r['event'] in ('push', 'schedule', 'workflow_dispatch', 'repository_dispatch')]
-        problems.extend(workflow_problems(workflow, runs, now, cadence))
+        problems.extend(workflow_problems(workflow, runs, now, cadence, target))
     return problems

@@ -11,10 +11,21 @@ TSF、COM、HWND、DPI 与 uiAccess 规则不适用于 Apple/Linux 或纯引擎�
 - 模块 API、构建命令与平台专属实现规则留在对应代码仓库；网站布局、导航与下载元数据归 MSIME-Web。
 - 具体目录职责见 [公共仓库与平台架构](https://github.com/metasequoiaime/MSIME-Docs/blob/main/architecture/repositories.md)。调整实现时仍需遵守以下契约和验证规则。
 
+## 分支模型
+
+MSIME-Engine、MSIME-Windows、MSIME-Apple、MSIME-Linux 四个代码仓的默认分支是 `develop`，`main` 是发布分支。
+
+- 日常改动从 `develop` 切分支，PR 合回 `develop`。默认分支已经是 `develop`，开 PR 时不需要改 base。
+- `main` 只在发版时前进：维护者把 `develop` 合进 `main`，随后 release-please 在 `main` 上产出版本 PR、tag 和 Release。各仓的 `release.yml` 仍然只监听 `main` 的 push，功能 CI、CodeQL 和质量检查同时监听两条分支。
+- 能以 `main` 为 base 的 head 只有 `develop`、`release/*` 和 release-please 的 `release-please--branches--main--*`。特性分支直接提到 `main` 会被各仓的 `Branch guard` 检查拦下，重新把 base 指向 `develop` 即可。
+- 发布之后 `main` 会比 `develop` 多出版本号与 CHANGELOG 提交，必须把 `main` 回合进 `develop`。漏掉这一步，下一轮 release-please 会在看不到这些提交的历史上重新推导版本，把已经发布过的条目再写一遍。
+- 跨仓 gitlink 指向生产者仓 `develop` 上已合并的提交；要求它同时进入发布历史的只有发布路径本身（`product-lock.json` 的 `verify-published` 按各仓默认分支判断可达性）。
+- MSIME-Docs、MSIME-Web 和本仓没有发布产物，继续只用 `main`。文档里指向这三个仓的 `blob/main/...` 链接因此保持不变。
+
 ## 跨仓变更
 
 - 修改共享接口时先更新权威实现及兼容性测试，再更新消费者固定版本，并在 PR 中互相链接。
-- 上游先合，再把下游 gitlink 指向合并后的默认分支提交，不指向 PR 分支上的 commit。
+- 上游先合，再把下游 gitlink 指向上游 `develop` 上合并后的提交，不指向 PR 分支上的 commit。
   指向未合并的 commit 会让下游默认分支引用一段随时可能被 rebase 或废弃的历史。
 - Windows 产品输入由 `MSIME-Windows/product-lock.json` 固定到 commit 和数据摘要；
   锁定仓外 Engine 和词库发布资产；本仓各组件由同一个 Windows 提交固定。Server、TSF、页面共享 vendor 中的 Engine 契约，页面生成副本必须通过同步检查。
@@ -47,7 +58,7 @@ TSF、COM、HWND、DPI 与 uiAccess 规则不适用于 Apple/Linux 或纯引擎�
 - 发布数据源 commit 与移动构建工具 commit 分别记录，工具 gitlink 不能冒充已下载数据的来源。
 - Engine 的公开词库入口为根 `build_profile.py`，桌面和移动规格在 `dictionary/` 维护，消费者不调用内部 stage。词库通过 Engine 的 `dict-*` release 发布，历史 Dict release 保持不可变。
 - 公共语音接口在 Engine `voice/`，按需链接 Voice、VoiceCapture 和 VoiceWhisper。平台负责麦克风权限、凭据保存、焦点、原生提示和最终文本提交；公共库不依赖平台前端。
-- 查询、建库、设置写入和升级回放必须遵循 [Engine 词库格式契约](https://github.com/metasequoiaime/MSIME-Engine/blob/main/contracts/dictionary/format.json)，不得在平台维护另一套分表定义。
+- 查询、建库、设置写入和升级回放必须遵循 [Engine 词库格式契约](https://github.com/metasequoiaime/MSIME-Engine/blob/develop/contracts/dictionary/format.json)，不得在平台维护另一套分表定义。
 - 基础数据升级必须先验证完整性、来源、格式和摘要，再切换；保留用户词库回放的事务与失败恢复。
 - 日语模型必须带 Mozc 授权文件；所有外部数据 revision 都显式固定，不使用浮动缓存冒充固定输入。
 - 用户文档只在 MSIME-Docs 编辑。MSIME-Web 维护渲染和网站专属内容；应用自身的构建/API 文档仍归各仓。

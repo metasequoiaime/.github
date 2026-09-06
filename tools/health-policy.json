@@ -15,7 +15,10 @@
     "workflows": {
       "codeql.yml": 240,
       "ci.yml": null,
-      "release.yml": null
+      "release.yml": {
+        "branch": "main",
+        "cadence": null
+      }
     }
   },
   "Google-PinyinIME-Rev": {
@@ -156,7 +159,10 @@
     "workflows": {
       "codeql.yml": 240,
       "ci.yml": null,
-      "release.yml": null
+      "release.yml": {
+        "branch": "main",
+        "cadence": null
+      }
     }
   },
   "MSIME-Linux": {
@@ -173,7 +179,10 @@
     "workflows": {
       "codeql.yml": 240,
       "ci.yml": null,
-      "release.yml": null
+      "release.yml": {
+        "branch": "main",
+        "cadence": null
+      }
     }
   },
   ".github": {
