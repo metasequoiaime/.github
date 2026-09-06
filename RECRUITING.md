@@ -106,5 +106,5 @@
 
 - Telegram：<https://t.me/msimegroup>
 - QQ 群：829919142
-- 邮箱：metasequoiaime@gmail.com
+- 邮箱：<metasequoiaime@gmail.com>
 - 或者直接在对应仓库开 Issue / Discussion。

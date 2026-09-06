@@ -65,6 +65,6 @@ MSIME-Windows 的 Issue 已经逐条核过并分类，标签的含义是固定�
 
 - Telegram：<https://t.me/msimegroup>
 - QQ 群：829919142
-- 邮箱：metasequoiaime@gmail.com
+- 邮箱：<metasequoiaime@gmail.com>
 
 参与本项目即表示同意遵守[行为准则](CODE_OF_CONDUCT.md)。简单说：可以指出问题、可以不同意、可以推翻方案，但对事不对人。
