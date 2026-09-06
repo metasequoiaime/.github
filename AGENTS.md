@@ -4,15 +4,12 @@
 TSF、COM、HWND、DPI 与 uiAccess 规则不适用于 Apple/Linux 或纯引擎代码。
 通用贡献流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
-## 职责与依赖
+## 内容归属
 
-| 仓库 | 权威职责 | 依赖关系 |
-|---|---|---|
-| MSIME-Engine | 平台无关输入行为、候选、学习、共享协议、词库生产与公共语音模块 | 不依赖任何平台前端或 UI |
-| MSIME-Windows | Windows 平台产品：TSF、Server、GUI、页面、安装器 | windows/、server/、ui/、ui-html/、installer/；vendor 中固定同一 Engine |
-| MSIME-Apple / MSIME-Linux | InputMethodKit/iOS、IBus 平台适配 | Engine 输入会话、固定发布词库与同源辅助码；公共语音通过 Engine 接入 |
-| MSIME-Docs | 用户文档正文与产品架构说明 | 文档内容权威 |
-| MSIME-Web | 官网呈现、导航、下载与文档渲染 | 固定 Docs 内容版本；更新信息来自已发布 Release |
+- 用户指南、仓库架构、平台接入矩阵和跨仓 CI 操作说明统一在 [MSIME-Docs](https://github.com/metasequoiaime/MSIME-Docs) 维护；本仓只链接，不复制技术正文或平台状态表。
+- 本仓维护组织主页、贡献/安全/治理政策、跨仓执行约束及组织自动化脚本、工作流。
+- 模块 API、构建命令与平台专属实现规则留在对应代码仓库；网站布局、导航与下载元数据归 MSIME-Web。
+- 具体目录职责见 [公共仓库与平台架构](https://github.com/metasequoiaime/MSIME-Docs/blob/main/architecture/repositories.md)。调整实现时仍需遵守以下契约和验证规则。
 
 ## 跨仓变更
 
@@ -26,25 +23,12 @@ TSF、COM、HWND、DPI 与 uiAccess 规则不适用于 Apple/Linux 或纯引擎�
 
 当前平台接入情况与迁移验收见 [Docs 平台接入矩阵](https://github.com/metasequoiaime/MSIME-Docs/blob/main/architecture/platform-adoption.md)。矩阵按明确的源码提交核对；Engine 的新接口已实现、已合入、被平台固定、随产品发布是四个不同状态。维护者交接记录方式见 [维护交接清单](MAINTAINER-HANDOFF.md)。
 
-## Windows 内部边界
-
-- `windows/` 是注入宿主的 TSF DLL；`server/` 是独立常驻进程，两者继续通过版本化管道通信。
-- `ui/` 是通用 GUI 库，不依赖输入法业务、Server 全局状态或词库。原生窗口由 `server/` 拥有，页面由 `ui-html/` 维护。
-- `installer/` 消费本仓产物；`log/` 和 `experiments/tsf-edit-control/` 保留日志库与编辑控件实验。
-- 各组件有自己的构建入口；DLL 静态 CRT 与 Server 动态 CRT 的构建树保持独立。
-
-旧 Dict、CustomDict、HelpCode、VoiceInput 已归档，当前源码分别在 Engine 的 `dictionary/`、`dictionary/custom/`、`helpcode/`、`voice/`。旧 Server、UI、UiHtml、Installer、Log、TsfEditControl 也已归档，维护入口是 Windows 对应目录。历史 Release 和提交继续保留。
-
 ## 版本号
 
 三个前端一律使用语义化版本，不使用日历版本。各仓维护自己的 semver 序列，由 release-please 的
 `simple` 策略从 conventional commits 推进。
 
-这条是已经付出过代价的结论，不是风格偏好。2026-09-05 曾把三端统一切到 `2026.9.0`，当天回退：
-release-please 没有 CalVer 策略，只能手工重置序列并钉死 `always-bump-patch`，而它据以生成
-changelog 的序列一旦与 tag 历史脱节，就会把早已发布的功能重写成一整条新版本记录（Linux 64 行、
-Apple 158 行）。更不可逆的是版本号本身——`v2026.9.1` 发布约二十分钟即删，但 dpkg 和 rpm 认为
-`2026.9.1 > 0.7.0`，那个窗口里装过的用户不引入永久 epoch 前缀就收不到升级。
+版本规则背景见 [历史回退记录](https://github.com/metasequoiaime/MSIME-Docs/blob/main/archive/2026-09-05-version-policy.md)。
 
 版本方案属于跨仓库契约，按 [GOVERNANCE.md](GOVERNANCE.md) 需要受影响的维护者达成一致，
 助手不得单方面提出或实施；要重开这个话题先开 Issue。
@@ -63,8 +47,7 @@ Apple 158 行）。更不可逆的是版本号本身——`v2026.9.1` 发布约�
 - 发布数据源 commit 与移动构建工具 commit 分别记录，工具 gitlink 不能冒充已下载数据的来源。
 - Engine 的公开词库入口为根 `build_profile.py`，桌面和移动规格在 `dictionary/` 维护，消费者不调用内部 stage。词库通过 Engine 的 `dict-*` release 发布，历史 Dict release 保持不可变。
 - 公共语音接口在 Engine `voice/`，按需链接 Voice、VoiceCapture 和 VoiceWhisper。平台负责麦克风权限、凭据保存、焦点、原生提示和最终文本提交；公共库不依赖平台前端。
-- 数据格式 1 的全拼分表：1–7 音节为 `tbl_{N}_{首字母}`，≥8 为 `tbl_others_{首字母}`。
-  查询、建库、设置写入和升级回放必须一致；禁止生成 `tbl_8_*`。权威定义在 Engine `contracts/dictionary/format.json`，同仓构建器通过该契约调用公共 API。
+- 查询、建库、设置写入和升级回放必须遵循 [Engine 词库格式契约](https://github.com/metasequoiaime/MSIME-Engine/blob/main/contracts/dictionary/format.json)，不得在平台维护另一套分表定义。
 - 基础数据升级必须先验证完整性、来源、格式和摘要，再切换；保留用户词库回放的事务与失败恢复。
 - 日语模型必须带 Mozc 授权文件；所有外部数据 revision 都显式固定，不使用浮动缓存冒充固定输入。
 - 用户文档只在 MSIME-Docs 编辑。MSIME-Web 维护渲染和网站专属内容；应用自身的构建/API 文档仍归各仓。

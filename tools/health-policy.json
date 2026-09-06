@@ -1,0 +1,193 @@
+{
+  "MSIME-Windows": {
+    "require_pr": true,
+    "checks": [
+      "Windows x64",
+      "Windows Win32",
+      "quality / Workflow validation",
+      "quality / Dependency review",
+      "Product inputs",
+      "Server",
+      "GUI framework",
+      "Settings page",
+      "Package contents"
+    ],
+    "workflows": {
+      "codeql.yml": 240,
+      "ci.yml": null,
+      "release.yml": null
+    }
+  },
+  "Google-PinyinIME-Rev": {
+    "require_pr": true,
+    "checks": [
+      "Workflow validation",
+      "Dependency review",
+      "Native / ubuntu-24.04",
+      "Native / macos-15",
+      "Native / windows-2025"
+    ],
+    "workflows": {
+      "codeql.yml": 240,
+      "ci.yml": null,
+      "quality.yml": null
+    }
+  },
+  "MSIME-Engine": {
+    "require_pr": true,
+    "checks": [
+      "Ubuntu x64",
+      "macOS arm64",
+      "Windows x64",
+      "Workflow validation",
+      "Dependency review",
+      "Shared WebView bindings",
+      "Linux ASan and UBSan",
+      "Build and verify",
+      "Voice / ubuntu-24.04",
+      "Voice / macos-15",
+      "Voice / windows-2025"
+    ],
+    "workflows": {
+      "codeql.yml": 240,
+      "ci.yml": null,
+      "quality.yml": null,
+      "build-dictionaries.yml": null,
+      "voice.yml": null
+    }
+  },
+  "MSIME-Docs": {
+    "require_pr": true,
+    "checks": [
+      "Workflow validation",
+      "Dependency review",
+      "Local documentation links"
+    ],
+    "workflows": {
+      "codeql.yml": 240,
+      "docs.yml": null,
+      "quality.yml": null
+    }
+  },
+  "Metasequoia-n-gram": {
+    "require_pr": true,
+    "checks": [
+      "Workflow validation",
+      "Dependency review",
+      "Python 3.12 / ubuntu-24.04",
+      "Python 3.12 / windows-2025",
+      "Python 3.14 / ubuntu-24.04",
+      "Python 3.14 / windows-2025"
+    ],
+    "workflows": {
+      "codeql.yml": 240,
+      "ci.yml": null,
+      "quality.yml": null
+    }
+  },
+  "MSIME-Web": {
+    "require_pr": true,
+    "checks": [
+      "Build",
+      "Workflow validation",
+      "Dependency review"
+    ],
+    "workflows": {
+      "codeql.yml": 240,
+      "ci.yml": null,
+      "quality.yml": null,
+      "update-manifest.yml": 6
+    }
+  },
+  "pinyin_cpp": {
+    "require_pr": true,
+    "checks": [
+      "Workflow validation",
+      "Dependency review",
+      "Native / ubuntu-24.04",
+      "Native / macos-15",
+      "Native / windows-2025"
+    ],
+    "workflows": {
+      "codeql.yml": 240,
+      "ci.yml": null,
+      "quality.yml": null
+    }
+  },
+  "pinyin_python": {
+    "require_pr": true,
+    "checks": [
+      "Workflow validation",
+      "Dependency review",
+      "Python 3.12 / ubuntu-24.04",
+      "Python 3.12 / windows-2025",
+      "Python 3.14 / ubuntu-24.04",
+      "Python 3.14 / windows-2025"
+    ],
+    "workflows": {
+      "codeql.yml": 240,
+      "ci.yml": null,
+      "quality.yml": null
+    }
+  },
+  "metasequoia-ime-skin-example": {
+    "require_pr": true,
+    "checks": [
+      "Workflow validation",
+      "Dependency review",
+      "Skin package and installer",
+      "Local documentation links"
+    ],
+    "workflows": {
+      "codeql.yml": 240,
+      "ci.yml": null,
+      "quality.yml": null
+    }
+  },
+  "MSIME-Apple": {
+    "require_pr": false,
+    "checks": [
+      "macOS 15 arm64",
+      "macOS 15 x86_64",
+      "iOS Simulator",
+      "quality / Workflow validation",
+      "quality / Dependency review"
+    ],
+    "workflows": {
+      "codeql.yml": 240,
+      "ci.yml": null,
+      "release.yml": null
+    }
+  },
+  "MSIME-Linux": {
+    "require_pr": true,
+    "checks": [
+      "Ubuntu 24.04 (amd64)",
+      "Ubuntu 24.04 (arm64)",
+      "Ubuntu 26.04 (amd64)",
+      "Ubuntu 26.04 (arm64)",
+      "quality / Workflow validation",
+      "quality / Dependency review",
+      "product / Validate product inputs"
+    ],
+    "workflows": {
+      "codeql.yml": 240,
+      "ci.yml": null,
+      "release.yml": null
+    }
+  },
+  ".github": {
+    "require_pr": true,
+    "checks": [
+      "Workflow validation",
+      "Dependency review",
+      "Local documentation links"
+    ],
+    "workflows": {
+      "codeql.yml": 240,
+      "docs.yml": null,
+      "quality.yml": null,
+      "audit-repositories.yml": 48
+    }
+  }
+}
