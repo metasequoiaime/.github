@@ -12,6 +12,13 @@
 | Windows 前端与后端、GUI 框架 | MSIME-Windows（windows/、server/、ui/ 等） | fanlusky |
 | Apple 与 Linux 前端 | MSIME-Apple、MSIME-Linux | houko |
 
+组织里还有另外两个账号持有权限，它们不承担上表中的任何领域，列在这里是为了让「谁能改动这个组织」这件事在文档里是完整的：
+
+| 账号 | 组织角色 | 说明 |
+| --- | --- | --- |
+| metasequoiaime-dev | Owner | 自动化账号，用于发布流水线 |
+| Neptrue-Lin | Member | 少量贡献，无领域负责范围 |
+
 **Engine 是共同维护的公共基础层。** 平台侧的主要分工不代表引擎归某一平台维护者独占，也不能据此推断双方没有维护重叠。继续通过跨平台评审、构建和交接扩大覆盖，尤其是各平台的原生集成与发布流程。
 
 如果你不确定某个改动该找谁看，按上表找对应领域的人；跨领域的改动（例如引擎加接口、各前端跟着用）请在各自的 PR 里互相链接。
@@ -33,6 +40,8 @@
 - **Triage**：可以给 Issue 打标签、关闭重复项、转移到正确的仓库，但不能推代码。
 - **Write**：可以推分支、合并 PR。
 - **Admin**：仓库设置、发布、权限管理。
+
+这四档要能真的授出去，组织的 base permission 必须低于 Triage。GitHub 的 base permission 是**下限**不是默认值：base 设成 admin 时，任何 org member 在所有仓库上都至少是 admin，想给某人 Triage 反而要先降权，上面这张表在技术上就无法执行。所以 base permission 应保持 Read，具体权限通过 team 授予。
 
 ## 怎么拿到更多权限
 

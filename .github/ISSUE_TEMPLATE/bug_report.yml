@@ -1,0 +1,104 @@
+name: Bug 反馈 / Bug Report
+description: 报告水杉输入法的错误或异常行为。Report a bug or unexpected behavior.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。请提到出问题的那个平台的仓库；不确定的话提在这里也可以，我们会转过去。
+
+        Thanks for the report. File it on the repository for the platform you hit the problem on; if you are not sure, filing it here is fine and we will move it.
+
+        提问与讨论请优先使用 [Telegram](https://t.me/msimegroup) 或 QQ 群 `829919142`。
+  - type: dropdown
+    id: platform
+    attributes:
+      label: 平台 / Platform
+      options:
+        - Windows
+        - macOS
+        - iOS
+        - Linux
+        - 引擎 / Engine（跨平台的组词、词库、辅助码）
+        - 文档 / Docs
+        - 官网 / Website
+        - 不确定 / Not sure
+    validations:
+      required: true
+  - type: dropdown
+    id: component
+    attributes:
+      label: 相关组件 / Component
+      description: 问题主要出现在哪个部分？Which part is primarily affected?
+      multiple: true
+      options:
+        - 候选窗 / Candidate window
+        - 词典 / Dictionary and Lexicon
+        - 辅助码 / Help Code
+        - 设置 / Settings
+        - 安装器 / Installer
+        - 语音输入 / Voice input
+        - 皮肤 / Skin
+        - 不确定 / Not sure
+        - 其他 / Other
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: 问题与行为 / Problem & Actual behavior
+      description: 发生了什么？What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤 / Steps to Reproduce
+      placeholder: |
+        1. …
+        2. …
+        3. …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期行为 / Expected Behavior
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 版本 / Version
+      description: 安装包版本、Release 标签，或 commit hash。
+      placeholder: e.g. v0.1.3 / abc1234
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: 系统环境 / OS
+      description: 系统与版本号；桌面环境或宿主程序若相关也请写上。
+      placeholder: e.g. Windows 11 24H2 / macOS 15.2 / Ubuntu 24.04 + GNOME
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志（可选）/ Logs (optional)
+      description: |
+        粘贴相关日志或附上截图。**不要粘贴真实输入内容、用户词库、API Key 或任何凭据。**
+        Paste relevant logs. Do not include real typed text, user dictionary contents, API keys or credentials.
+      render: shell
+    validations:
+      required: false
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 提交前确认 / Checklist
+      options:
+        - label: 我已搜索过现有 Issue，确认这不是重复反馈。I searched existing issues and this is not a duplicate.
+          required: true
+        - label: 这不是安全漏洞。安全问题请按 SECURITY.md 私下上报。This is not a security vulnerability; those go through SECURITY.md.
+          required: true

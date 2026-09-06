@@ -1,5 +1,22 @@
 # 水杉输入法 · Metasequoia IME
 
+<!-- badges:start -->
+[![Windows](https://img.shields.io/github/v/release/metasequoiaime/MSIME-Windows?include_prereleases&label=Windows)](https://github.com/metasequoiaime/MSIME-Windows/releases)
+[![Apple](https://img.shields.io/github/v/release/metasequoiaime/MSIME-Apple?include_prereleases&label=macOS%20%2F%20iOS)](https://github.com/metasequoiaime/MSIME-Apple/releases)
+[![Linux](https://img.shields.io/github/v/release/metasequoiaime/MSIME-Linux?include_prereleases&label=Linux)](https://github.com/metasequoiaime/MSIME-Linux/releases)
+[![Downloads](https://img.shields.io/github/downloads/metasequoiaime/MSIME-Windows/total?label=downloads)](https://github.com/metasequoiaime/MSIME-Windows/releases)
+[![License](https://img.shields.io/badge/license-GPL--3.0-blue)](https://github.com/metasequoiaime/.github/blob/main/LICENSE)
+[![Stars](https://img.shields.io/github/stars/metasequoiaime/MSIME-Windows?style=flat&label=stars)](https://github.com/metasequoiaime/MSIME-Windows/stargazers)
+<!-- badges:end -->
+
+> **In English.** Metasequoia IME (水杉输入法) is an open-source Chinese and Japanese input method for Windows, macOS, iOS and Linux. The four frontends are native — pure TSF on Windows, InputMethodKit on macOS, IBus on Linux — and share one C++ conversion engine ([MSIME-Engine](https://github.com/metasequoiaime/MSIME-Engine)), which also holds the dictionaries, helpcode tables and voice module. GPL-3.0, and it will stay fully open source.
+>
+> An input method sees everything you type, so the privacy boundary should be checkable by reading the code rather than taken on trust. That is the main reason this is open.
+>
+> Downloads: <https://msime.app/download/> · Docs: <https://msime.app/docs/> · Contributing: [RECRUITING.md](https://github.com/metasequoiaime/.github/blob/main/RECRUITING.md)
+>
+> Most documentation and the UI are in Chinese, since that is who the product is for. Translation is one of the easiest ways to contribute and does not require building anything — see the recruiting page.
+
 一套开源中文输入法。从 Windows 纯 TSF 前端起步，现在公共引擎、词库、辅助码与语音模块统一在 MSIME-Engine，各平台共用同一套 C++ 引擎，界面和文本注入各自原生实现。GPL-3.0，现在和将来都会保持 100% 开源。
 
 官网：<https://msime.app>
@@ -38,8 +55,18 @@
 - [项目治理](https://github.com/metasequoiaime/.github/blob/main/GOVERNANCE.md)：谁负责哪一块、怎么拿到更多权限
 - [行为准则](https://github.com/metasequoiaime/.github/blob/main/CODE_OF_CONDUCT.md)
 
+<!-- star-history:start -->
+## Star History
+
+<a href="https://star-history.com/#metasequoiaime/MSIME-Windows&metasequoiaime/MSIME-Docs&metasequoiaime/MSIME-Apple&metasequoiaime/MSIME-Engine&metasequoiaime/MSIME-Linux&Date">
+  <img src="https://api.star-history.com/svg?repos=metasequoiaime/MSIME-Windows,metasequoiaime/MSIME-Docs,metasequoiaime/MSIME-Apple,metasequoiaime/MSIME-Engine,metasequoiaime/MSIME-Linux&type=Date" alt="Star History Chart" width="640">
+</a>
+<!-- star-history:end -->
+
 ## 社区
 
-Telegram <https://t.me/msimegroup> · QQ 群 829919142 · 邮箱 metasequoiaime@gmail.com · 问题与功能讨论请走对应仓库的 Issues 和 Discussions。
+Telegram <https://t.me/msimegroup> · QQ 群 829919142 · 邮箱 metasequoiaime@gmail.com
+
+Bug 与功能建议请提到对应平台仓库的 Issues；开放式的使用讨论集中在 [MSIME-Windows 的 Discussions](https://github.com/metasequoiaime/MSIME-Windows/discussions)（其余仓库不单独开，避免分散到几个空板块）。**疑似安全漏洞不要走以上任何一个公开渠道**，按 [SECURITY.md](https://github.com/metasequoiaime/.github/blob/main/SECURITY.md) 私下上报。
 
 提交 Issue、PR、截图或日志前，请确认其中不含 API Key 等敏感信息。

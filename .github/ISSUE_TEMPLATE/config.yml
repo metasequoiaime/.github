@@ -1,0 +1,17 @@
+blank_issues_enabled: false
+contact_links:
+  # First on purpose: blank issues are disabled, so for someone who found a vulnerability this
+  # chooser is the only path, and without this row the natural next action is a public bug report --
+  # exactly what SECURITY.md forbids.
+  - name: 安全漏洞 / Security vulnerability
+    url: https://github.com/metasequoiaime/.github/blob/main/SECURITY.md
+    about: 疑似漏洞请按 SECURITY.md 私下上报，不要提交公开 issue。Report privately; never open a public issue.
+  - name: Telegram 群组 / Telegram Group
+    url: https://t.me/msimegroup
+    about: 使用问题、讨论与日常交流。Questions and discussions.
+  - name: 用户文档 / Documentation
+    url: https://msime.app/docs/
+    about: 安装、设置与故障排查。Installation, settings and troubleshooting.
+  - name: 想参与开发 / Want to contribute
+    url: https://github.com/metasequoiaime/.github/blob/main/RECRUITING.md
+    about: 按方向整理的可参与事项，含不需要写代码的部分。
