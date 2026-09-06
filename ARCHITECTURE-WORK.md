@@ -6,40 +6,53 @@
 
 ```mermaid
 flowchart LR
-  Windows[Windows TSF DLL] -->|版本化管道| Server[Windows Server]
-  Server --> Engine[Engine InputSession / 共享契约]
-  Apple[macOS / iOS] --> Engine
-  Linux[IBus / GTK] --> Engine
-  Server --> GUI[MSIME-UI 通用原生组件]
-  Server --> Pages[UiHtml 页面]
+  subgraph WindowsRepo[MSIME-Windows]
+    Windows[windows / TSF DLL] -->|版本化管道| Server[server]
+    Server --> GUI[ui / 通用原生组件]
+    Server --> Pages[ui-html / 页面]
+    Installer[installer] --> Windows
+    Installer --> Server
+    Installer --> Pages
+  end
+  subgraph EngineRepo[MSIME-Engine]
+    Engine[InputSession / contracts]
+    Dict[dictionary / desktop 与 mobile 产品]
+    Help[helpcode]
+    Voice[voice / 公共语音]
+    Dict -->|同源格式契约| Engine
+  end
+  Server --> Engine
+  Apple[MSIME-Apple] --> Engine
+  Linux[MSIME-Linux] --> Engine
   Pages -->|生成绑定| Engine
-  Dict[Dict desktop / mobile 产品] -->|版本 / 摘要 / 格式清单| Server
+  Lock[Windows product-lock] -->|固定 Engine commit| EngineRepo
+  Lock -->|固定 release / 来源 / 摘要| Dict
+  Dict --> Server
   Dict --> Apple
   Dict --> Linux
-  Dict -->|公共分表规则| Engine
-  Lock[Windows product-lock] --> Server
-  Lock --> Pages
-  Lock --> Installer[Installer]
-  Docs[Docs 用户正文] -->|固定 gitlink| Web[Web 渲染 / 导航]
-  Releases[已发布 Windows Releases] -->|校验与版本排序| Web
+  Server --> Voice
+  Apple --> Voice
+  Linux --> Voice
+  Docs[MSIME-Docs] -->|固定 gitlink| Web[MSIME-Web]
+  Releases[已发布 Windows Releases] --> Web
 ```
 
-保留 DLL/Server 进程隔离和各平台原生宿主边界。通过共同接口、固定产物和组合验证消除跨仓漂移，无需先物理合仓。
+合仓已完成：公共源数据、辅助码与语音归 Engine，Windows 组件按目录维护；DLL/Server 的进程隔离与 GUI 业务边界保留。Windows 产品锁只记录仓外 Engine 与词库资产，内部组件由同一 Windows 提交固定。当前仓库地图见 [仓库职责说明](https://github.com/metasequoiaime/MSIME-Docs/blob/main/architecture/repositories.md)。
 
 ## 按优先级落地
 
 | 项目 | 原问题 | 最终实现 |
 |---|---|---|
-| 1. 发布组合 | 单仓固定版本不能复现整套产品，代码与数据可能错配 | Windows 锁定全部一方源码输入及词库摘要；构建、打包、重建和来源清单使用同一组合；发布门禁验证依赖 commit 可从各仓默认分支到达 |
+| 1. 发布组合 | 单仓固定版本不能复现整套产品，代码与数据可能错配 | Windows 同一提交固定内部组件，产品锁固定 Engine 及词库摘要；构建、打包、重建和来源清单使用同一组合；发布门禁验证依赖 commit 可从各仓默认分支到达 |
 | 2. 跨仓协议 | IPC/语音/Web 消息存在重复定义和隐式兼容假设 | Engine contracts 为唯一来源；主连接版本/能力/请求关联协商；TS/JS/C++ 生成 Web 绑定及双方校验；真实 Win32/x64 管道测试覆盖旧/新客户端、版本拒绝和重连 |
 | 3. 输入行为 | Server 与平台会话各自推进组合、管理组词和本地查询 | 共享 InputSession 负责候选推进、规范拼音、跨次选择学习、本地模式与在线代次；Server 仅作异步宿主适配；Apple/Linux 同步选择保留未消费后缀，宿主退出使用公共 finish_composition |
-| 4. 词库产品 | 移动压缩在平台复制，格式/来源和分表规则分散 | Dict 提供公开 desktop/mobile profile，记录来源、格式/引擎兼容、特性及摘要；建表、插入、查询、设置写入和回放共用 Engine 格式契约；SQLite 冻结为可独立分发的 DELETE journal 文件 |
-| 5. UI 边界 | 多后端持有重复候选展示业务，通用 GUI 职责不明确 | 候选视图模型共享，原生小窗口/WebView 设置页的职责和兼容退出条件明确；删除旧会话和孤立 D2D 原型；MSIME-UI 增加业务依赖防回流检查 |
+| 4. 词库产品 | 移动压缩在平台复制，格式/来源和分表规则分散 | Engine dictionary 提供公开 desktop/mobile profile，记录来源、格式/引擎兼容、特性及摘要；建表、插入、查询、设置写入和回放共用 Engine 格式契约；SQLite 冻结为可独立分发的 DELETE journal 文件 |
+| 5. UI 边界 | 多后端持有重复候选展示业务，通用 GUI 职责不明确 | 候选视图模型共享，原生小窗口/WebView 设置页的职责和兼容退出条件明确；删除旧会话和孤立 D2D 原型；Windows ui/ 增加业务依赖防回流检查 |
 | 6. 规范与发布信息 | Windows 专属规则扩散，用户正文与更新版本重复维护 | 组织 AGENTS 归 .github，平台保留本地规则；Docs 为用户指南唯一正文，Web 固定版本渲染；更新元数据从正式发布事实生成并防止旧版重发导致回退 |
 
-## 最终提交与验证
+## 合仓前架构改造的提交与验证（历史记录）
 
-下表的 CI 对应指定提交，不把旧版本的绿勾当作新版本的证据。
+下表保留原架构改造的提交与 CI，旧仓库链接用于历史追溯；它们不代表合仓后的最新版本或维护入口。
 
 | 仓库 / PR | 提交 | 实际验证 |
 |---|---|---|
