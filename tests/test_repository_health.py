@@ -5,7 +5,8 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from repository_health import workflow_problems, protection_problems, security_problems
+from repository_health import (ORGANIZATION_EXPECTATIONS, organization_problems, protection_problems,
+                               security_problems, workflow_problems)
 
 NOW = datetime(2026, 9, 6, tzinfo=timezone.utc)
 
@@ -76,6 +77,34 @@ class ProtectionHealth(unittest.TestCase):
         self.assertTrue(security_problems(settings, dict(enabled=False), config, True))
         self.assertTrue(security_problems(settings, dict(enabled=True), {}, True))
         self.assertTrue(security_problems(settings, dict(enabled=True), config, False))
+
+
+class OrganizationHealth(unittest.TestCase):
+    def setUp(self):
+        self.settings = dict(ORGANIZATION_EXPECTATIONS, default_repository_permission='read')
+
+    def test_expected_settings_are_clean(self):
+        self.assertEqual(organization_problems(self.settings), [])
+
+    def test_every_expectation_is_enforced(self):
+        for field, expected in ORGANIZATION_EXPECTATIONS.items():
+            settings = dict(self.settings, **{field: not expected})
+            self.assertTrue(any(field in problem for problem in organization_problems(settings)))
+
+    def test_unreadable_field_is_a_problem_rather_than_a_pass(self):
+        settings = {k: v for k, v in self.settings.items() if k != 'two_factor_requirement_enabled'}
+        self.assertTrue(any('unreadable' in problem for problem in organization_problems(settings)))
+
+    def test_base_permission_above_read_is_rejected(self):
+        self.assertEqual(organization_problems(dict(self.settings, default_repository_permission='none')), [])
+        for permission in ('write', 'admin'):
+            settings = dict(self.settings, default_repository_permission=permission)
+            self.assertTrue(any('default_repository_permission' in p for p in organization_problems(settings)))
+
+    def test_truthy_values_do_not_satisfy_a_boolean_expectation(self):
+        # GitHub returns booleans here; a string or a number means the shape changed and the check
+        # is no longer reading what it thinks it is.
+        self.assertTrue(organization_problems(dict(self.settings, two_factor_requirement_enabled=1)))
 
 
 if __name__ == '__main__':

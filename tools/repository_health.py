@@ -66,6 +66,39 @@ def security_problems(settings, private_reporting, configuration, alerts_enabled
     return problems
 
 
+# Repository settings are audited above, but the organization settings that decide who may create,
+# delete or expose a repository are not versioned anywhere and drift silently. Every member currently
+# has 2FA on by choice; requiring it at the organization level is what keeps that true for the next
+# member and for outside collaborators.
+ORGANIZATION_EXPECTATIONS = {
+    'two_factor_requirement_enabled': True,
+    'members_can_delete_repositories': False,
+    'members_can_change_repo_visibility': False,
+    'members_can_create_public_repositories': False,
+    'members_can_create_private_repositories': False,
+    'dependabot_alerts_enabled_for_new_repositories': True,
+    'dependabot_security_updates_enabled_for_new_repositories': True,
+    'dependency_graph_enabled_for_new_repositories': True,
+    'secret_scanning_enabled_for_new_repositories': True,
+    'secret_scanning_push_protection_enabled_for_new_repositories': True,
+}
+
+
+def organization_problems(settings, expectations=None):
+    problems = []
+    for field, expected in (expectations or ORGANIZATION_EXPECTATIONS).items():
+        if field not in settings:
+            problems.append(f'organization: {field} unreadable with the audit credential')
+        elif settings[field] is not expected:
+            problems.append(f'organization: {field} is {settings[field]!r}, expected {expected!r}')
+    if 'default_repository_permission' not in settings:
+        problems.append('organization: default_repository_permission unreadable with the audit credential')
+    elif settings['default_repository_permission'] not in ('read', 'none'):
+        permission = settings['default_repository_permission']
+        problems.append(f'organization: default_repository_permission is {permission!r}, expected read or none')
+    return problems
+
+
 def audit_repository(repository, api, policy, now=None):
     now = now or datetime.now(timezone.utc)
     prefix = 'repos/' + repository['full_name']
