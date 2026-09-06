@@ -31,7 +31,7 @@ MSIME-Windows 的 Issue 已经逐条核过并分类，标签的含义是固定�
 
 ## 提交 Pull Request
 
-- 在特性分支上开发，通过 PR 合入 `main`，不直接推 `main`。
+- 在特性分支上开发，通过 PR 合入 `develop`，不直接推共享分支。MSIME-Engine、MSIME-Windows、MSIME-Apple、MSIME-Linux 的默认分支就是 `develop`，开 PR 时不用改 base。`main` 是发布分支，只在发版时由维护者从 `develop` 合入；以特性分支为 head 提到 `main` 的 PR 会被 `Branch guard` 检查拦下，把 base 改回 `develop` 即可。MSIME-Docs、MSIME-Web 和 .github 没有发布产物，仍然只用 `main`。完整规则见[组织 AGENTS.md 的分支模型](AGENTS.md#分支模型)。
 - 使用 conventional commits 并带模块 scope，例如 `feat(quanpin): ...`、`fix(tsf): ...`、`test(engine): ...`、`chore(ci): ...`。
 - **PR 里必须说明你怎么验证的。** 输入法很难靠读代码判断对错，改动是否安全大多要看实测：在哪个系统版本、哪个程序里、按了什么、看到什么。跑过的测试命令和结果一并贴上。
 - 仓库有 CI 的，CI 必须绿。仓库有测试的，新增行为要带测试。
