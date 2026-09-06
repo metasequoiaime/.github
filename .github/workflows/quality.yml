@@ -30,6 +30,8 @@ jobs:
           # Ignore style suggestions, but fail on shell correctness warnings and errors.
           SHELLCHECK_OPTS: --severity=warning
         run: actionlint -color
+      - name: Test the organization health guard
+        run: python3 -m unittest discover -s tests
   dependencies:
     name: Dependency review
     if: github.event_name == 'pull_request'
