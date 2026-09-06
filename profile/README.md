@@ -9,6 +9,14 @@
 [![Stars](https://img.shields.io/github/stars/metasequoiaime/MSIME-Windows?style=flat&label=stars)](https://github.com/metasequoiaime/MSIME-Windows/stargazers)
 <!-- badges:end -->
 
+> **In English.** Metasequoia IME (水杉输入法) is an open-source Chinese and Japanese input method for Windows, macOS, iOS and Linux. The four frontends are native — pure TSF on Windows, InputMethodKit on macOS, IBus on Linux — and share one C++ conversion engine ([MSIME-Engine](https://github.com/metasequoiaime/MSIME-Engine)), which also holds the dictionaries, helpcode tables and voice module. GPL-3.0, and it will stay fully open source.
+>
+> An input method sees everything you type, so the privacy boundary should be checkable by reading the code rather than taken on trust. That is the main reason this is open.
+>
+> Downloads: <https://msime.app/download/> · Docs: <https://msime.app/docs/> · Contributing: [RECRUITING.md](https://github.com/metasequoiaime/.github/blob/main/RECRUITING.md)
+>
+> Most documentation and the UI are in Chinese, since that is who the product is for. Translation is one of the easiest ways to contribute and does not require building anything — see the recruiting page.
+
 一套开源中文输入法。从 Windows 纯 TSF 前端起步，现在公共引擎、词库、辅助码与语音模块统一在 MSIME-Engine，各平台共用同一套 C++ 引擎，界面和文本注入各自原生实现。GPL-3.0，现在和将来都会保持 100% 开源。
 
 官网：<https://msime.app>
