@@ -32,7 +32,7 @@
 
 ## 发布与仓库设置
 
-Windows 正式发布继续手动触发：签名次数有成本，不将每次合并变成签名发布。现有 release-please 版本方案、draft 校验、产品锁和 Cloudflare Pages 集成保留。
+Windows 按产品仓库当前策略自动发布：版本 PR 经过 CI 后自动合并，再构建、签名和发布；`workflow_dispatch` 用于修复已有 draft。签名成本与发布节奏由产品仓库的 `docs/product-release.md` 说明。CI 门禁改动不重定义现有 release-please 版本方案、draft 校验、产品锁或 Cloudflare Pages 集成。
 
 新检查首次运行通过后再加入分支 ruleset 的 required checks，使用 GitHub 实际显示的检查名；不能把没有运行过或会被路径过滤永久跳过的任务设为必需。main 应禁止强推和删除，并要求 PR 及通过检查；维护者的既有 bypass 规则需保留。
 
