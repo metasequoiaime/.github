@@ -17,6 +17,7 @@ MSIME-Engine、MSIME-Windows、MSIME-Apple、MSIME-Linux 四个代码仓的默�
 
 - 日常改动从 `develop` 切分支，PR 合回 `develop`。默认分支已经是 `develop`，开 PR 时不需要改 base。
 - `main` 只在发版时前进：维护者把 `develop` 合进 `main`，随后 release-please 在 `main` 上产出版本 PR、tag 和 Release。各仓的 `release.yml` 仍然只监听 `main` 的 push，功能 CI、CodeQL 和质量检查同时监听两条分支。
+- release-please 的 `target-branch` 必须在各仓 `release.yml` 的每一处调用上显式写成 `main`。它默认读写仓库默认分支，而默认分支现在是 `develop`；不写死，版本 PR、CHANGELOG 和 tag 会全部落到 `develop` 上，而发布流水线等待的 `release-please--branches--main--*` 分支永远不会出现，整条发布链在没有任何报错的情况下停住。
 - 能以 `main` 为 base 的 head 只有 `develop`、`release/*` 和 release-please 的 `release-please--branches--main--*`。特性分支直接提到 `main` 会被各仓的 `Branch guard` 检查拦下，重新把 base 指向 `develop` 即可。
 - 发布之后 `main` 会比 `develop` 多出版本号与 CHANGELOG 提交，必须把 `main` 回合进 `develop`。漏掉这一步，下一轮 release-please 会在看不到这些提交的历史上重新推导版本，把已经发布过的条目再写一遍。
 - 跨仓 gitlink 指向生产者仓 `develop` 上已合并的提交；要求它同时进入发布历史的只有发布路径本身（`product-lock.json` 的 `verify-published` 按各仓默认分支判断可达性）。
