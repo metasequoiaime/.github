@@ -8,18 +8,7 @@
 
 ## 先找对仓库
 
-水杉输入法拆成多个仓库，问题往往不在你看到它的那个仓库里：
-
-| 现象 | 大概率属于 |
-| --- | --- |
-| 某个程序里按键、上屏、光标、候选窗位置不对 | 对应平台前端：[MSIME-Windows](https://github.com/metasequoiaime/MSIME-Windows) / [MSIME-Apple](https://github.com/metasequoiaime/MSIME-Apple) / [MSIME-Linux](https://github.com/metasequoiaime/MSIME-Linux) |
-| 候选词顺序、组词、联想、纠错不对 | [MSIME-Engine](https://github.com/metasequoiaime/MSIME-Engine) |
-| 某个词打不出来、拼音或权重错了 | [MSIME-Engine/dictionary](https://github.com/metasequoiaime/MSIME-Engine/tree/main/dictionary) |
-| 辅助码筛选结果不对 | [MSIME-Engine/helpcode](https://github.com/metasequoiaime/MSIME-Engine/tree/main/helpcode) |
-| Windows 上设置界面、托盘菜单、工具栏的行为 | [Windows/server](https://github.com/metasequoiaime/MSIME-Windows/tree/main/server) |
-| 安装、升级、卸载失败 | [Windows/installer](https://github.com/metasequoiaime/MSIME-Windows/tree/main/installer) |
-
-拿不准就提到你遇到问题的那个仓库，维护者会转移，不要因为不确定而不提。
+按 [Docs 的问题归属表](https://github.com/metasequoiaime/MSIME-Docs/blob/main/architecture/repositories.md#问题应提交到哪里)选择实现仓库。拿不准就提到遇到问题的平台仓库，由维护者转移。
 
 ## 主仓 Issue 的标签
 

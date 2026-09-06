@@ -25,7 +25,7 @@
 - [MSIME-Engine](https://github.com/metasequoiaime/MSIME-Engine) — 公共输入引擎、词库构建与数据、辅助码、语音模块
 - [Windows/server](https://github.com/metasequoiaime/MSIME-Windows/tree/main/server) — Windows 常驻后端
 - [Windows/ui](https://github.com/metasequoiaime/MSIME-Windows/tree/main/ui) — 自研原生 GUI 框架（Win32 + Direct2D）
-- [MSIME-Docs](https://github.com/metasequoiaime/MSIME-Docs) — 文档（施工中）
+- [MSIME-Docs](https://github.com/metasequoiaime/MSIME-Docs) — 用户指南、架构与开发维护文档
 
 其余仓库（n-gram 联想、皮肤示例等）见下方仓库列表。
 
