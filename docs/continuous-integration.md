@@ -38,6 +38,8 @@ Windows 正式发布继续手动触发：签名次数有成本，不将每次合
 
 维护者应启用 dependency graph、Dependabot alerts/security updates、secret scanning 和 push protection。工作流文件无法代替这些 GitHub 仓库设置。CodeQL 上传成功及 Settings 的实际状态是启用成功的证据。
 
+MSIME-Apple 保留现有发布提交快进路径：在机器人 PR 无法创建时，严格核对版本提交、作者、改动文件和 main 状态，再等待手动 CI 成功后推进 main。因此保留它现有的状态检查门禁，不另加会堵住该路径的必须 PR 规则；新增质量检查也随该手动 CI 执行。
+
 MSIME-Web 的现有更新清单任务在运行元数据回归测试后，直接提交生成的 `public/update.json`。GitHub 不允许把内置 Actions app 添加为该仓库 ruleset 的 bypass actor；当前仅为它启用禁止删除和强推的历史保护，保留清单同步与 Cloudflare Pages 发布。其余代码的 PR 仍执行构建、依赖审查和扫描。若以后要求网站所有写入也必须通过 PR，需要先把清单同步迁移到经过 CI 的机器人 PR 流程，不能直接加规则把自动更新堵住。
 
 ## 本地复现
