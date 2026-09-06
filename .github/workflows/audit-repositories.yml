@@ -2,11 +2,11 @@ name: Organization CI coverage
 on:
   push:
     branches: [main]
-    paths: [tools/audit_repositories.py, .github/workflows/audit-repositories.yml]
+    paths: ['tools/**', 'tests/**', .github/workflows/audit-repositories.yml]
   pull_request:
-    paths: [tools/audit_repositories.py, .github/workflows/audit-repositories.yml]
+    paths: ['tools/**', 'tests/**', .github/workflows/audit-repositories.yml]
   schedule:
-    - cron: '17 5 * * 2'
+    - cron: '17 5 * * *'
   workflow_dispatch:
 permissions:
   contents: read
@@ -14,6 +14,18 @@ concurrency:
   group: organization-ci-audit
   cancel-in-progress: false
 jobs:
+  tests:
+    name: Health audit regression tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.14'
+      - run: python -m unittest discover -s tests
   coverage:
     name: Maintained repository coverage
     runs-on: ubuntu-24.04
@@ -29,3 +41,33 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: python tools/audit_repositories.py
+  health:
+    name: Maintained repository health
+    # PR code only receives the read-only coverage token; privileged reads use reviewed main.
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.14'
+      - name: Audit runs and protection settings
+        env:
+          # Existing organization credential can read administration/security settings.
+          # The script performs GET requests only and never prints the credential.
+          GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+        run: |
+          test -n "$GH_TOKEN"
+          python tools/audit_repositories.py --health --report health-report.json
+      - name: Preserve health findings
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: repository-health
+          path: health-report.json
+          if-no-files-found: error
+          retention-days: 30
