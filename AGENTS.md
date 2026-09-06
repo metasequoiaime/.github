@@ -24,6 +24,8 @@ TSF、COM、HWND、DPI 与 uiAccess 规则不适用于 Apple/Linux 或纯引擎�
 - 通过组合 CI 验证实际发布输入。单仓编译通过不等价于产品兼容；Windows 要覆盖 x86/x64 客户端。
 - 保持 Windows DLL/Server 进程隔离；是否合仓取决于维护边界，不应通过合仓替代协议和产物契约。
 
+当前平台接入情况与迁移验收见 [Docs 平台接入矩阵](https://github.com/metasequoiaime/MSIME-Docs/blob/main/architecture/platform-adoption.md)。矩阵按明确的源码提交核对；Engine 的新接口已实现、已合入、被平台固定、随产品发布是四个不同状态。维护者交接记录方式见 [维护交接清单](MAINTAINER-HANDOFF.md)。
+
 ## Windows 内部边界
 
 - `windows/` 是注入宿主的 TSF DLL；`server/` 是独立常驻进程，两者继续通过版本化管道通信。
