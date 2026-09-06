@@ -6,9 +6,16 @@ contact_links:
   - name: 安全漏洞 / Security vulnerability
     url: https://github.com/metasequoiaime/.github/blob/main/SECURITY.md
     about: 疑似漏洞请按 SECURITY.md 私下上报，不要提交公开 issue。Report privately; never open a public issue.
+  # Above the chat groups on purpose. Telegram is blocked in mainland China and QQ is unusable
+  # outside it, and neither is searchable or archived -- the same question gets answered again every
+  # week and no one who searches later finds it. Discussions is the venue profile/README.md already
+  # names as the place for open-ended questions; until it is offered here it stays empty.
+  - name: 使用讨论 / Discussions
+    url: https://github.com/metasequoiaime/MSIME-Windows/discussions
+    about: 开放式的使用问题与讨论，公开可搜索。Open-ended questions, publicly searchable.
   - name: Telegram 群组 / Telegram Group
     url: https://t.me/msimegroup
-    about: 使用问题、讨论与日常交流。Questions and discussions.
+    about: 即时交流；中国大陆用户请用 QQ 群 829919142。Real-time chat.
   - name: 用户文档 / Documentation
     url: https://msime.app/docs/
     about: 安装、设置与故障排查。Installation, settings and troubleshooting.

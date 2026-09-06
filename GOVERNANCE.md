@@ -43,6 +43,46 @@
 
 这四档要能真的授出去，组织的 base permission 必须低于 Triage。GitHub 的 base permission 是**下限**不是默认值：base 设成 admin 时，任何 org member 在所有仓库上都至少是 admin，想给某人 Triage 反而要先降权，上面这张表在技术上就无法执行。所以 base permission 应保持 Read，具体权限通过 team 授予。
 
+组织里的 team 与上面四档的对应关系：
+
+| Team | 对应档位 | 当前成员 |
+| --- | --- | --- |
+| maintainers | Write / Admin | fanlusky、houko |
+| release-automation | 发布流水线专用 | metasequoiaime-dev |
+| contributors | Write（受限范围） | Neptrue-Lin |
+| triage | Triage | 空 |
+
+**triage team 目前是空的。** 这不是没人合适，而是没有人被主动邀请过——已经有合并记录的贡献者可以直接授出这一档，不必等对方开口。
+
+## 发布授权
+
+发布是这个项目里唯一一条会把产物推送给所有用户的路径，所以它的授权边界要单独写清楚。
+
+**当前的发布方式是自动的。** 三个平台仓库都接了 release-please：main 上每一次带 `fix:` 或 `feat:` 的合并，都会走完构建并发布一个 release，中间没有人工确认节点。这意味着**能合并到 main 的人就是能发版的人**——发布授权实际上等同于该仓库的合并权限，不存在一个更窄的「发布者」角色。
+
+因此，发布关键路径上的文件必须要求评审，即使日常代码改动不强制。这些路径是：
+
+- `.github/workflows/`（发布流水线本身）
+- `installer/`、打包与安装脚本
+- `product-lock.json`、`version.txt`（决定发出去的是哪份数据、哪个版本）
+- `vendor/MetasequoiaImeEngine` 的 gitlink（决定发出去的是哪个引擎）
+
+### 凭据登记
+
+发布链路上的每一项凭据都必须在这里登记持有人与备份人。**凭据本身不写入任何仓库**，这张表只记录「谁持有」和「谁能在持有人不可用时接手」。
+
+| 凭据 | 存放位置 | 状态 |
+| --- | --- | --- |
+| `RELEASE_PLEASE_TOKEN` | 组织级 Actions secret | 已配置，由 metasequoiaime-dev 账号持有 |
+| `SPARKLE_ED_PRIVATE_KEY` | MSIME-Apple 仓库 Actions secret | 已配置，用于签名 macOS 更新 appcast |
+| Windows 代码签名证书 | 尚未配置 | 发布流水线的签名分支已就绪，但没有可用凭据，产物全部以 `-unsigned` 发布 |
+| Apple Developer ID | 尚未配置 | 同上，macOS 产物未签名、未公证 |
+| Linux 发布 GPG 密钥 | 尚未配置 | deb/rpm 无 detached 签名 |
+| msime.app 域名与 CDN | 未登记 | 需要补上持有人与备份人 |
+| 组织 Owner 账号 | 未登记 | 需要补上各 Owner 的持有人与恢复方式 |
+
+后四行是明确的连续性风险，不是待办事项的占位：在补齐之前，这些资产的单点失效是没有备份路径的。
+
 ## 怎么拿到更多权限
 
 没有考核表，也没有固定的贡献数量门槛。实际的判断是：**你的改动是否可以被信任地合并，而不需要维护者逐行重读。**
