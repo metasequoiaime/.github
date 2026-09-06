@@ -1,0 +1,4 @@
+# Applies to every repository in the organisation that does not carry its own .github/FUNDING.yml.
+# Only houko has an active GitHub Sponsors listing today; add other maintainers here as they enable
+# one rather than listing a handle that renders as a dead link.
+github: [houko]

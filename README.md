@@ -1,5 +1,12 @@
 # metasequoiaime/.github
 
+<!-- badges:start -->
+[![CI](https://img.shields.io/github/actions/workflow/status/metasequoiaime/.github/quality.yml?branch=main&label=CI)](https://github.com/metasequoiaime/.github/actions/workflows/quality.yml)
+[![CodeQL](https://img.shields.io/github/actions/workflow/status/metasequoiaime/.github/codeql.yml?branch=main&label=CodeQL)](https://github.com/metasequoiaime/.github/actions/workflows/codeql.yml)
+[![License](https://img.shields.io/github/license/metasequoiaime/.github)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/metasequoiaime/.github?style=flat)](https://github.com/metasequoiaime/.github/stargazers)
+<!-- badges:end -->
+
 本仓库存放水杉输入法（Metasequoia IME）的组织级公共文件，不包含输入法本身的代码。各代码仓库的地图见[组织主页](https://github.com/metasequoiaime)。
 
 | 路径 | 用途 |
@@ -31,3 +38,11 @@ macOS Homebrew 依赖可加 `--prefix-path /opt/homebrew`（按本机安装位�
 脚本只读取 Git 对象，忽略工作区未提交内容和脏子模块指针；把 Engine 实际固定的第三方提交和平台测试源码导出到临时目录，保存提交清单与配置、构建、CTest 日志。失败返回非零，目录保留供排障。它不改产品锁、不获取网络数据、不安装输入法。
 
 此预检运行 iOS bridge 和 Linux 控制器的既有可移植测试，适合提前发现 Engine 升级导致的输入行为回归。它不覆盖 Windows、AppKit/UIKit、IBus/D-Bus、语音、词库打包或真实设备；通过后仍要执行平台原生和产品组合检查。
+
+<!-- star-history:start -->
+## Star History
+
+<a href="https://star-history.com/#metasequoiaime/.github&Date">
+  <img src="https://api.star-history.com/svg?repos=metasequoiaime/.github&type=Date" alt="Star History Chart" width="600">
+</a>
+<!-- star-history:end -->

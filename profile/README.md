@@ -1,5 +1,14 @@
 # 水杉输入法 · Metasequoia IME
 
+<!-- badges:start -->
+[![Windows](https://img.shields.io/github/v/release/metasequoiaime/MSIME-Windows?include_prereleases&label=Windows)](https://github.com/metasequoiaime/MSIME-Windows/releases)
+[![Apple](https://img.shields.io/github/v/release/metasequoiaime/MSIME-Apple?include_prereleases&label=macOS%20%2F%20iOS)](https://github.com/metasequoiaime/MSIME-Apple/releases)
+[![Linux](https://img.shields.io/github/v/release/metasequoiaime/MSIME-Linux?include_prereleases&label=Linux)](https://github.com/metasequoiaime/MSIME-Linux/releases)
+[![Downloads](https://img.shields.io/github/downloads/metasequoiaime/MSIME-Windows/total?label=downloads)](https://github.com/metasequoiaime/MSIME-Windows/releases)
+[![License](https://img.shields.io/badge/license-GPL--3.0-blue)](https://github.com/metasequoiaime/.github/blob/main/LICENSE)
+[![Stars](https://img.shields.io/github/stars/metasequoiaime/MSIME-Windows?style=flat&label=stars)](https://github.com/metasequoiaime/MSIME-Windows/stargazers)
+<!-- badges:end -->
+
 一套开源中文输入法。从 Windows 纯 TSF 前端起步，现在公共引擎、词库、辅助码与语音模块统一在 MSIME-Engine，各平台共用同一套 C++ 引擎，界面和文本注入各自原生实现。GPL-3.0，现在和将来都会保持 100% 开源。
 
 官网：<https://msime.app>
@@ -37,6 +46,14 @@
 - [贡献指南](https://github.com/metasequoiaime/.github/blob/main/CONTRIBUTING.md)：怎么找对仓库、Issue 标签的含义、PR 的要求
 - [项目治理](https://github.com/metasequoiaime/.github/blob/main/GOVERNANCE.md)：谁负责哪一块、怎么拿到更多权限
 - [行为准则](https://github.com/metasequoiaime/.github/blob/main/CODE_OF_CONDUCT.md)
+
+<!-- star-history:start -->
+## Star History
+
+<a href="https://star-history.com/#metasequoiaime/MSIME-Windows&metasequoiaime/MSIME-Docs&metasequoiaime/MSIME-Apple&metasequoiaime/MSIME-Engine&metasequoiaime/MSIME-Linux&Date">
+  <img src="https://api.star-history.com/svg?repos=metasequoiaime/MSIME-Windows,metasequoiaime/MSIME-Docs,metasequoiaime/MSIME-Apple,metasequoiaime/MSIME-Engine,metasequoiaime/MSIME-Linux&type=Date" alt="Star History Chart" width="640">
+</a>
+<!-- star-history:end -->
 
 ## 社区
 
