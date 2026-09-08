@@ -1,5 +1,5 @@
 name: 功能建议 / Feature Request
-description: 提出新功能或改进。Suggest a feature or improvement.
+description: 希望增加功能或改善体验？说说你的使用场景。Suggest a feature or improvement.
 title: "[Feature] "
 labels: ["enhancement"]
 body:
@@ -7,7 +7,7 @@ body:
     id: platform
     attributes:
       label: 平台 / Platform
-      description: 只影响某个平台，还是所有平台都要？
+      description: 选择希望支持的平台，可多选。不确定时选择你正在使用的平台。Choose one or more platforms.
       multiple: true
       options:
         - Windows
@@ -23,14 +23,16 @@ body:
     id: problem
     attributes:
       label: 要解决什么问题 / What problem does this solve
-      description: 先说场景，再说方案。你现在是怎么绕过去的？
+      description: 说说你在什么情况下遇到不便，以及它对你的影响。不需要了解技术实现。Describe your situation and the difficulty.
+      placeholder: 例如：在高分辨率屏幕上打字时，候选字太小，看清后才能选字，打字容易中断。
     validations:
       required: true
   - type: textarea
     id: proposal
     attributes:
       label: 设想的做法 / Proposed behaviour
-      description: 别的输入法是怎么做的？有截图或链接更好。
+      description: 描述你希望达到的效果即可，不用设计实现方案。还没想好可以跳过。Describe the result you would like; an implementation plan is not needed.
+      placeholder: 例如：希望能在设置里调大候选字，并立即看到调整效果。
     validations:
       required: false
   - type: checkboxes
