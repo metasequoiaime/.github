@@ -1,5 +1,5 @@
 name: Bug 反馈 / Bug Report
-description: 报告水杉输入法的错误或异常行为。Report a bug or unexpected behavior.
+description: 遇到出错、无法输入或显示异常？请描述现象，我们一起排查。Report something that is not working.
 title: "[Bug] "
 labels: ["bug"]
 body:
@@ -24,13 +24,14 @@ body:
         - 文档 / Docs
         - 官网 / Website
         - 不确定 / Not sure
+      description: 选择出现问题的平台；不确定可以选“不确定”。Choose the affected platform, or Not sure.
     validations:
       required: true
   - type: dropdown
     id: component
     attributes:
       label: 相关组件 / Component
-      description: 问题主要出现在哪个部分？Which part is primarily affected?
+      description: 可选择多项。不知道属于哪个部分时，选“不确定”即可。Select all that apply; choose Not sure if unsure.
       multiple: true
       options:
         - 候选窗 / Candidate window
@@ -49,37 +50,40 @@ body:
     attributes:
       label: 问题与行为 / Problem & Actual behavior
       description: 发生了什么？What happened?
+      placeholder: 例如：打开记事本，切换到水杉输入法后，候选字显示成方框，无法辨认。其他软件中也会出现。
     validations:
       required: true
   - type: textarea
     id: steps
     attributes:
       label: 复现步骤 / Steps to Reproduce
-      placeholder: |
-        1. …
-        2. …
-        3. …
+      placeholder: |-
+        1. 打开一个文本编辑器，切换到水杉输入法
+        2. 输入测试拼音 nihao
+        3. 观察候选字是否正常显示
+      description: 按顺序写下你做了什么。偶尔出现、无法稳定重现也可以反馈，请写出当时的操作。Describe what you did, even if the issue only happens sometimes.
     validations:
       required: true
   - type: textarea
     id: expected
     attributes:
       label: 预期行为 / Expected Behavior
+      placeholder: 例如：候选字应正常显示为汉字，按数字键可以选中。
     validations:
       required: true
   - type: input
     id: version
     attributes:
       label: 版本 / Version
-      description: 安装包版本、Release 标签，或 commit hash。
-      placeholder: e.g. v0.1.3 / abc1234
+      description: 填写你安装的输入法版本号，可查看安装包文件名或下载记录。暂时找不到请填“不确定”。Use the installed version; enter Not sure if unavailable.
+      placeholder: 例如：安装包中的 vX.Y.Z；不知道请填“不确定”
     validations:
       required: true
   - type: input
     id: os
     attributes:
       label: 系统环境 / OS
-      description: 系统与版本号；桌面环境或宿主程序若相关也请写上。
+      description: 系统与版本号；桌面环境或宿主程序若相关也请写上。 知道多少写多少，不清楚的项目可写“不确定”。Include what you know; unknown details are OK.
       placeholder: e.g. Windows 11 24H2 / macOS 15.2 / Ubuntu 24.04 + GNOME
     validations:
       required: true
