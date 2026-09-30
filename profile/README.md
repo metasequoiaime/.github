@@ -1,15 +1,14 @@
 # 水杉输入法 · Metasequoia IME
 
 <!-- badges:start -->
-[![Windows](https://img.shields.io/github/v/release/metasequoiaime/MSIME-Windows?include_prereleases&label=Windows)](https://github.com/metasequoiaime/MSIME-Windows/releases)
-[![Apple](https://img.shields.io/github/v/release/metasequoiaime/MSIME-Apple?include_prereleases&label=macOS%20%2F%20iOS)](https://github.com/metasequoiaime/MSIME-Apple/releases)
-[![Linux](https://img.shields.io/github/v/release/metasequoiaime/MSIME-Linux?include_prereleases&label=Linux)](https://github.com/metasequoiaime/MSIME-Linux/releases)
-[![Downloads](https://img.shields.io/github/downloads/metasequoiaime/MSIME-Windows/total?label=downloads)](https://github.com/metasequoiaime/MSIME-Windows/releases)
+[![Windows](https://img.shields.io/github/v/release/metasequoiaime/msime-windows?include_prereleases&label=Windows)](https://github.com/metasequoiaime/msime-windows/releases)
+[![Apple](https://img.shields.io/github/v/release/metasequoiaime/msime?include_prereleases&label=macOS%20%2F%20iOS)](https://github.com/metasequoiaime/msime/releases)
+[![Downloads](https://img.shields.io/github/downloads/metasequoiaime/msime-windows/total?label=downloads)](https://github.com/metasequoiaime/msime-windows/releases)
 [![License](https://img.shields.io/badge/license-GPL--3.0-blue)](https://github.com/metasequoiaime/.github/blob/main/LICENSE)
-[![Stars](https://img.shields.io/github/stars/metasequoiaime/MSIME-Windows?style=flat&label=stars)](https://github.com/metasequoiaime/MSIME-Windows/stargazers)
+[![Stars](https://img.shields.io/github/stars/metasequoiaime/msime-windows?style=flat&label=stars)](https://github.com/metasequoiaime/msime-windows/stargazers)
 <!-- badges:end -->
 
-> **In English.** Metasequoia IME (水杉输入法) is an open-source Chinese and Japanese input method for Windows, macOS, iOS and Linux. The four frontends are native — pure TSF on Windows, InputMethodKit on macOS, IBus on Linux — and share one C++ conversion engine ([MSIME-Engine](https://github.com/metasequoiaime/MSIME-Engine)), which also holds the dictionaries, helpcode tables and voice module. GPL-3.0, and it will stay fully open source.
+> **In English.** Metasequoia IME (水杉输入法) is an open-source Chinese input method for Android, iOS, macOS, Linux, Windows and HarmonyOS. Every platform ships a native host — an input method service on Android, a keyboard extension on iOS, InputMethodKit on macOS, IBus and Fcitx5 on Linux, TSF on Windows, InputMethodExtensionAbility on HarmonyOS — on top of one shared Rust input runtime and engine in the [msime](https://github.com/metasequoiaime/msime) monorepo. The Windows release is still built and shipped from [msime-windows](https://github.com/metasequoiaime/msime-windows). GPL-3.0, and it will stay fully open source.
 >
 > An input method sees everything you type, so the privacy boundary should be checkable by reading the code rather than taken on trust. That is the main reason this is open.
 >
@@ -17,18 +16,20 @@
 >
 > Most documentation and the UI are in Chinese, since that is who the product is for. Translation is one of the easiest ways to contribute and does not require building anything — see the recruiting page.
 
-一套开源中文输入法。从 Windows 纯 TSF 前端起步，现在公共引擎、词库、辅助码与语音模块统一在 MSIME-Engine，各平台共用同一套 C++ 引擎，界面和文本注入各自原生实现。GPL-3.0，现在和将来都会保持 100% 开源。
+一套开源中文输入法。从 Windows 纯 TSF 前端起步，现在 Android、iOS、macOS、Linux、Windows 与 HarmonyOS 六个平台的原生宿主统一在 [msime](https://github.com/metasequoiaime/msime) 主仓，共用同一套 Rust 输入运行时与引擎（由原 C++ MSIME-Engine 移植）和同一份 React 设置界面，系统接入与文本上屏由各平台原生实现。Windows 正式版目前仍由 [msime-windows](https://github.com/metasequoiaime/msime-windows) 独立构建和发布。GPL-3.0，现在和将来都会保持 100% 开源。
 
 官网：<https://msime.app>
 
-| 平台 | 状态 | 前端 |
-| --- | --- | --- |
-| Windows 10 / 11 | 公开内测 | 纯 TSF + 常驻 Server |
-| macOS 12+ | 已发布 | InputMethodKit + AppKit |
-| Linux | 已发布 | IBus，另含 GTK 设置程序 |
-| iOS | 开发中 | 宿主 App + 键盘扩展 |
+| 平台 | 状态 | 原生宿主 | 发布位置 |
+| --- | --- | --- | --- |
+| Windows 10 / 11 | 公开内测 | 纯 TSF DLL + 常驻 Server | [msime-windows](https://github.com/metasequoiaime/msime-windows/releases) |
+| macOS | 已发布 | InputMethodKit | [msime](https://github.com/metasequoiaime/msime/releases)（`macos-v*`） |
+| iOS | 测试构建 | 宿主 App + 键盘扩展 | [msime](https://github.com/metasequoiaime/msime/releases)（`ios-v*` 预发布） |
+| Linux | 迁移中 | IBus 与 Fcitx5 | 旧版见已归档的 [msime-linux](https://github.com/metasequoiaime/msime-linux/releases)，新版将从 msime 发布 |
+| Android | 开发中 | 输入法服务 | — |
+| HarmonyOS | 开发中 | InputMethodExtensionAbility | — |
 
-安装包在各平台前端仓库的 Releases 页，下载与安装说明见[官网](https://msime.app/download/)。
+下载与安装说明见[官网](https://msime.app/download/)。
 
 ## 为什么开源
 
@@ -36,15 +37,16 @@
 
 ## 主要仓库
 
-- [MSIME-Windows](https://github.com/metasequoiaime/MSIME-Windows) — Windows 平台产品（TSF、Server、GUI、页面与安装器）
-- [MSIME-Apple](https://github.com/metasequoiaime/MSIME-Apple) — macOS / iOS 原生前端
-- [MSIME-Linux](https://github.com/metasequoiaime/MSIME-Linux) — IBus 前端与桌面工具
-- [MSIME-Engine](https://github.com/metasequoiaime/MSIME-Engine) — 公共输入引擎、词库构建与数据、辅助码、语音模块
-- [Windows/server](https://github.com/metasequoiaime/MSIME-Windows/tree/develop/server) — Windows 常驻后端
-- [Windows/ui](https://github.com/metasequoiaime/MSIME-Windows/tree/develop/ui) — 自研原生 GUI 框架（Win32 + Direct2D）
+- [msime](https://github.com/metasequoiaime/msime) — 多平台主仓：六个平台的原生宿主、共享 Rust 输入引擎与运行时、Tauri + React 设置界面
+- [msime-windows](https://github.com/metasequoiaime/msime-windows) — Windows 平台产品（TSF、Server、GUI、页面与安装器）
+- [msime-windows/server](https://github.com/metasequoiaime/msime-windows/tree/develop/server) — Windows 常驻后端
+- [msime-windows/ui](https://github.com/metasequoiaime/msime-windows/tree/develop/ui) — 自研原生 GUI 框架（Win32 + Direct2D）
+- [msime-cloud](https://github.com/metasequoiaime/msime-cloud) — 共通 Go 后端：云候选、AI 联想、翻译、语音识别
+- [msime-customdict](https://github.com/metasequoiaime/msime-customdict) — 人工维护的共享自定义词库
 - [MSIME-Docs](https://github.com/metasequoiaime/MSIME-Docs) — 用户指南、架构与开发维护文档
+- [msime-web](https://github.com/metasequoiaime/msime-web) — 官网
 
-其余仓库（n-gram 联想、皮肤示例等）见下方仓库列表。
+原 MSIME-Engine、MSIME-Linux 已归档，内容迁入 msime 主仓；MSIME-Apple 已更名为 msime。其余仓库（语言模型、皮肤、Homebrew tap 等）见下方仓库列表。
 
 ## 参与贡献
 
@@ -58,8 +60,8 @@
 <!-- star-history:start -->
 ## Star History
 
-<a href="https://star-history.com/#metasequoiaime/MSIME-Windows&metasequoiaime/MSIME-Docs&metasequoiaime/MSIME-Apple&metasequoiaime/MSIME-Engine&metasequoiaime/MSIME-Linux&Date">
-  <img src="https://api.star-history.com/svg?repos=metasequoiaime/MSIME-Windows,metasequoiaime/MSIME-Docs,metasequoiaime/MSIME-Apple,metasequoiaime/MSIME-Engine,metasequoiaime/MSIME-Linux&type=Date" alt="Star History Chart" width="640">
+<a href="https://star-history.com/#metasequoiaime/msime-windows&metasequoiaime/msime&metasequoiaime/MSIME-Docs&Date">
+  <img src="https://api.star-history.com/svg?repos=metasequoiaime/msime-windows,metasequoiaime/msime,metasequoiaime/MSIME-Docs&type=Date" alt="Star History Chart" width="640">
 </a>
 <!-- star-history:end -->
 
@@ -67,6 +69,6 @@
 
 Telegram <https://t.me/msimegroup> · QQ 群 829919142 · 邮箱 metasequoiaime@gmail.com
 
-Bug 与功能建议请提到对应平台仓库的 Issues；开放式的使用讨论集中在 [MSIME-Windows 的 Discussions](https://github.com/metasequoiaime/MSIME-Windows/discussions)（其余仓库不单独开，避免分散到几个空板块）。**疑似安全漏洞不要走以上任何一个公开渠道**，按 [SECURITY.md](https://github.com/metasequoiaime/.github/blob/main/SECURITY.md) 私下上报。
+Bug 与功能建议请提到对应平台仓库的 Issues；开放式的使用讨论集中在 [msime-windows 的 Discussions](https://github.com/metasequoiaime/msime-windows/discussions)（其余仓库不单独开，避免分散到几个空板块）。**疑似安全漏洞不要走以上任何一个公开渠道**，按 [SECURITY.md](https://github.com/metasequoiaime/.github/blob/main/SECURITY.md) 私下上报。
 
 提交 Issue、PR、截图或日志前，请确认其中不含 API Key 等敏感信息。
