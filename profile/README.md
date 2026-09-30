@@ -24,10 +24,10 @@
 | --- | --- | --- | --- |
 | Windows 10 / 11 | 公开内测 | 纯 TSF DLL + 常驻 Server | [msime-windows](https://github.com/metasequoiaime/msime-windows/releases) |
 | macOS | 已发布 | InputMethodKit | [msime](https://github.com/metasequoiaime/msime/releases)（`macos-v*`） |
-| iOS | 测试构建 | 宿主 App + 键盘扩展 | [msime](https://github.com/metasequoiaime/msime/releases)（`ios-v*` 预发布） |
-| Linux | 迁移中 | IBus 与 Fcitx5 | 旧版见已归档的 [msime-linux](https://github.com/metasequoiaime/msime-linux/releases)，新版将从 msime 发布 |
-| Android | 开发中 | 输入法服务 | — |
-| HarmonyOS | 开发中 | InputMethodExtensionAbility | — |
+| iOS | 已完成，待发版 | 宿主 App + 键盘扩展 | [msime](https://github.com/metasequoiaime/msime/releases)（目前为 `ios-v*` 预发布构建） |
+| Linux | 已完成，待发版 | IBus 与 Fcitx5 | [msime](https://github.com/metasequoiaime/msime/releases)（旧版见已归档的 [msime-linux](https://github.com/metasequoiaime/msime-linux/releases)） |
+| Android | 已完成，待发版 | 输入法服务 | [msime](https://github.com/metasequoiaime/msime/releases) |
+| HarmonyOS | 已完成，待发版 | InputMethodExtensionAbility | [msime](https://github.com/metasequoiaime/msime/releases) |
 
 下载与安装说明见[官网](https://msime.app/download/)。
 
