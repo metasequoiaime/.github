@@ -62,8 +62,8 @@ Most documentation and the UI are in Chinese, since that is who the product is f
 <!-- star-history:start -->
 ## Star History
 
-<a href="https://star-history.com/#metasequoiaime/msime-windows&metasequoiaime/msime&Date">
-  <img src="https://api.star-history.com/svg?repos=metasequoiaime/msime-windows,metasequoiaime/msime&type=Date" alt="Star History Chart" width="640">
+<a href="https://star-history.com/#metasequoiaime/msime-windows&metasequoiaime/msime&metasequoiaime/msime-cloud&metasequoiaime/msime-web&metasequoiaime/chinese-ime-lm&metasequoiaime/homebrew-tap&Date">
+  <img src="https://api.star-history.com/svg?repos=metasequoiaime/msime-windows,metasequoiaime/msime,metasequoiaime/msime-cloud,metasequoiaime/msime-web,metasequoiaime/chinese-ime-lm,metasequoiaime/homebrew-tap&type=Date" alt="Star History Chart" width="640">
 </a>
 <!-- star-history:end -->
 
