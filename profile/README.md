@@ -39,11 +39,8 @@
 
 - [msime](https://github.com/metasequoiaime/msime) — 多平台主仓：六个平台的原生宿主、共享 Rust 输入引擎与运行时、Tauri + React 设置界面
 - [msime-windows](https://github.com/metasequoiaime/msime-windows) — Windows 平台产品（TSF、Server、GUI、页面与安装器）
-- [msime-windows/server](https://github.com/metasequoiaime/msime-windows/tree/develop/server) — Windows 常驻后端
-- [msime-windows/ui](https://github.com/metasequoiaime/msime-windows/tree/develop/ui) — 自研原生 GUI 框架（Win32 + Direct2D）
 - [msime-cloud](https://github.com/metasequoiaime/msime-cloud) — 共通 Go 后端：云候选、AI 联想、翻译、语音识别
 - [msime-customdict](https://github.com/metasequoiaime/msime-customdict) — 人工维护的共享自定义词库
-- [MSIME-Docs](https://github.com/metasequoiaime/MSIME-Docs) — 用户指南、架构与开发维护文档
 - [msime-web](https://github.com/metasequoiaime/msime-web) — 官网
 
 原 MSIME-Engine、MSIME-Linux 已归档，内容迁入 msime 主仓；MSIME-Apple 已更名为 msime。其余仓库（语言模型、皮肤、Homebrew tap 等）见下方仓库列表。
