@@ -5,7 +5,7 @@ import json
 import subprocess
 import sys
 from pathlib import Path
-from product_locks import ENGINE_SUBMODULE_PATH, PLATFORM_REPOSITORIES, audit_product_locks
+from product_locks import PLATFORM_LOCKS, audit_product_locks, normalize_lock
 from repository_health import audit_repository, organization_problems
 from urllib.parse import quote
 
@@ -39,17 +39,13 @@ def gitlink(repository, path):
 
 
 def product_lock_findings(organization):
-    locks, pins = {}, {}
-    for name in PLATFORM_REPOSITORIES:
-        repository = f'{organization}/{name}'
-        raw = contents(repository, 'product-lock.json')
+    locks = {}
+    for name, path in PLATFORM_LOCKS.items():
+        raw = contents(f'{organization}/{name}', path)
         if raw is None:
-            return [f'{name}: product-lock.json is unreadable'], []
-        locks[name] = json.loads(raw)
-        pins[name] = gitlink(repository, ENGINE_SUBMODULE_PATH)
-    engine = api(f'repos/{organization}/MSIME-Engine/commits?per_page=100', '--paginate', '--slurp')
-    history = [commit['sha'] for page in engine for commit in page]
-    return audit_product_locks(locks, pins, history)
+            return [f'{name}: {path} is unreadable'], []
+        locks[name] = normalize_lock(json.loads(raw))
+    return audit_product_locks(locks)
 
 
 def audit(organization, health=False, report=None):

@@ -1,5 +1,5 @@
 {
-  "MSIME-Windows": {
+  "msime-windows": {
     "require_pr": true,
     "checks": [
       "Windows x64",
@@ -36,29 +36,6 @@
       "quality.yml": null
     }
   },
-  "MSIME-Engine": {
-    "require_pr": true,
-    "checks": [
-      "Ubuntu x64",
-      "macOS arm64",
-      "Windows x64",
-      "Workflow validation",
-      "Dependency review",
-      "Shared WebView bindings",
-      "Linux ASan and UBSan",
-      "Build and verify",
-      "Voice / ubuntu-24.04",
-      "Voice / macos-15",
-      "Voice / windows-2025"
-    ],
-    "workflows": {
-      "codeql.yml": 240,
-      "ci.yml": null,
-      "quality.yml": null,
-      "build-dictionaries.yml": null,
-      "voice.yml": null
-    }
-  },
   "MSIME-Docs": {
     "require_pr": true,
     "checks": [
@@ -72,7 +49,7 @@
       "quality.yml": null
     }
   },
-  "Metasequoia-n-gram": {
+  "chinese-ime-lm": {
     "require_pr": true,
     "checks": [
       "Workflow validation",
@@ -88,7 +65,7 @@
       "quality.yml": null
     }
   },
-  "MSIME-Web": {
+  "msime-web": {
     "require_pr": true,
     "checks": [
       "Build",
@@ -99,7 +76,7 @@
       "codeql.yml": 240,
       "ci.yml": null,
       "quality.yml": null,
-      "update-manifest.yml": 6
+      "sync-downloads.yml": 6
     }
   },
   "pinyin_cpp": {
@@ -133,7 +110,7 @@
       "quality.yml": null
     }
   },
-  "metasequoia-ime-skin-example": {
+  "msime-skin-example": {
     "require_pr": true,
     "checks": [
       "Workflow validation",
@@ -147,8 +124,8 @@
       "quality.yml": null
     }
   },
-  "MSIME-Apple": {
-    "require_pr": false,
+  "msime": {
+    "require_pr": true,
     "checks": [
       "macOS 15 arm64",
       "macOS 15 x86_64",
@@ -159,27 +136,11 @@
     "workflows": {
       "codeql.yml": 240,
       "ci.yml": null,
-      "release.yml": {
+      "release-macos.yml": {
         "branch": "main",
         "cadence": null
-      }
-    }
-  },
-  "MSIME-Linux": {
-    "require_pr": true,
-    "checks": [
-      "Ubuntu 24.04 (amd64)",
-      "Ubuntu 24.04 (arm64)",
-      "Ubuntu 26.04 (amd64)",
-      "Ubuntu 26.04 (arm64)",
-      "quality / Workflow validation",
-      "quality / Dependency review",
-      "product / Validate product inputs"
-    ],
-    "workflows": {
-      "codeql.yml": 240,
-      "ci.yml": null,
-      "release.yml": {
+      },
+      "release-ios.yml": {
         "branch": "main",
         "cadence": null
       }

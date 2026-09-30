@@ -4,7 +4,7 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from product_locks import audit_product_locks, dictionary_problems, engine_pin_report
+from product_locks import audit_product_locks, dictionary_problems, engine_pin_report, normalize_lock
 
 TAG = dict(repository='metasequoiaime/MSIME-Engine', tag='dict-v1.0.0', source_commit='d0dc0c2')
 HISTORY = ['c%02d' % index for index in range(30)]
@@ -71,7 +71,45 @@ class EnginePins(unittest.TestCase):
         self.assertTrue(problems)
 
 
+def artifact(name, digest, url):
+    return dict(name=name, sha256=digest, size=1, url=url)
+
+
+RELEASE = 'https://github.com/metasequoiaime/msime-engine/releases/download/dict-v1.0.0/'
+
+
+class LockFormats(unittest.TestCase):
+    def test_artifact_lock_takes_the_dictionary_release_and_ignores_other_assets(self):
+        lock = dict(source_commit='d0dc0c2', artifacts=[
+            artifact('msime.db', 'aa', RELEASE + 'msime.db'),
+            artifact('sentence-model.safetensors', 'mm',
+                     'https://github.com/metasequoiaime/chinese-ime-lm/releases/download/model-v1/sentence-model.safetensors'),
+        ])
+        self.assertEqual(normalize_lock(lock), {'dictionary': dict(
+            repository='metasequoiaime/msime-engine', tag='dict-v1.0.0', source_commit='d0dc0c2', assets={'msime.db': 'aa'})})
+
+    def test_both_formats_agree_when_they_pin_the_same_release(self):
+        artifacts = dict(source_commit='d0dc0c2', artifacts=[artifact('msime.db', 'aa', RELEASE + 'msime.db')])
+        locks = {'msime-windows': normalize_lock(lock(**{'msime.db': 'aa'})), 'msime': normalize_lock(artifacts)}
+        # MSIME-Engine and msime-engine are the same repository; case alone is not a mismatch.
+        self.assertEqual(dictionary_problems(locks), [])
+
+    def test_artifact_lock_spanning_two_dictionary_releases_is_rejected(self):
+        lock = dict(source_commit='d0dc0c2', artifacts=[
+            artifact('msime.db', 'aa', RELEASE + 'msime.db'),
+            artifact('english.db', 'bb', RELEASE.replace('dict-v1.0.0', 'dict-v2.0.0') + 'english.db'),
+        ])
+        with self.assertRaises(ValueError):
+            normalize_lock(lock)
+
+
 class CombinedAudit(unittest.TestCase):
+    def test_without_engine_pins_only_dictionary_problems_are_reported(self):
+        locks = {'msime-windows': lock(**{'msime.db': 'aa'}), 'msime': lock(**{'msime.db': 'cc'})}
+        problems, notes = audit_product_locks(locks)
+        self.assertTrue(any('msime.db' in problem for problem in problems))
+        self.assertEqual(notes, [])
+
     def test_problems_and_notes_are_kept_apart(self):
         locks = {'MSIME-Windows': lock(**{'msime.db': 'aa'}), 'MSIME-Apple': lock(**{'msime.db': 'cc'})}
         pins = {'MSIME-Windows': 'c00', 'MSIME-Apple': 'c03'}
