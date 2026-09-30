@@ -25,14 +25,14 @@ Most documentation and the UI are in Chinese, since that is who the product is f
 
 官网：<https://msime.app>
 
-| 平台 | 状态 | 原生宿主 | 发布位置 |
-| --- | --- | --- | --- |
-| Windows 10 / 11 | 公开测试 | 纯 TSF DLL + 常驻 Server | [msime-windows](https://github.com/metasequoiaime/msime-windows/releases) |
-| macOS | 公开测试 | InputMethodKit | [msime](https://github.com/metasequoiaime/msime/releases)（`macos-v*`） |
-| iOS | 公开测试 | 宿主 App + 键盘扩展 | [msime](https://github.com/metasequoiaime/msime/releases)（目前为 `ios-v*` 预发布构建） |
-| Linux | 公开测试 | IBus 与 Fcitx5 | [msime](https://github.com/metasequoiaime/msime/releases) |
-| Android | 公开测试 | 输入法服务 | [msime](https://github.com/metasequoiaime/msime/releases) |
-| HarmonyOS | 公开测试 | InputMethodExtensionAbility | [msime](https://github.com/metasequoiaime/msime/releases) |
+| 平台 | 状态 | 发布位置 |
+| --- | --- | --- |
+| Windows 10 / 11 | 公开测试 | [msime-windows](https://github.com/metasequoiaime/msime-windows/releases) |
+| macOS | 公开测试 | [msime](https://github.com/metasequoiaime/msime/releases)（`macos-v*`） |
+| iOS | 公开测试 | [msime](https://github.com/metasequoiaime/msime/releases)（目前为 `ios-v*` 预发布构建） |
+| Linux | 公开测试 | [msime](https://github.com/metasequoiaime/msime/releases) |
+| Android | 公开测试 | [msime](https://github.com/metasequoiaime/msime/releases) |
+| HarmonyOS（手机 / 平板 / 电脑） | 公开测试 | [msime](https://github.com/metasequoiaime/msime/releases) |
 
 下载与安装说明见[官网](https://msime.app/download/)。
 
