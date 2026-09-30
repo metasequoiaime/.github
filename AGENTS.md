@@ -57,7 +57,7 @@ MSIME-Engine、MSIME-Windows、MSIME-Apple、MSIME-Linux 四个代码仓的默�
 ## 数据与文档
 
 - 发布数据源 commit 与移动构建工具 commit 分别记录，工具 gitlink 不能冒充已下载数据的来源。
-- Engine 的公开词库入口为根 `build_profile.py`，桌面和移动规格在 `dictionary/` 维护，消费者不调用内部 stage。词库通过 Engine 的 `dict-*` release 发布，历史 Dict release 保持不可变。
+- 词库源数据（基础词库、人工维护词条与翻译、专业词库）在 [msime-dictionary](https://github.com/metasequoiaime/msime-dictionary) 维护，由 msime 的 `msime-dict-build`（`crates/dict-builder`）按 `resources/dictionary-sources.lock.json` 固定的提交构建，消费者不调用内部 stage。词库以 `dict-*` release 发布，已发布的 release（历史 Dict 与 Engine 上的版本）保持不可变。
 - 公共语音接口在 Engine `voice/`，按需链接 Voice、VoiceCapture 和 VoiceWhisper。平台负责麦克风权限、凭据保存、焦点、原生提示和最终文本提交；公共库不依赖平台前端。
 - 查询、建库、设置写入和升级回放必须遵循 [Engine 词库格式契约](https://github.com/metasequoiaime/MSIME-Engine/blob/develop/contracts/dictionary/format.json)，不得在平台维护另一套分表定义。
 - 基础数据升级必须先验证完整性、来源、格式和摘要，再切换；保留用户词库回放的事务与失败恢复。
