@@ -8,13 +8,18 @@
 [![Stars](https://img.shields.io/github/stars/metasequoiaime/msime-windows?style=flat&label=stars)](https://github.com/metasequoiaime/msime-windows/stargazers)
 <!-- badges:end -->
 
-> **In English.** Metasequoia IME (水杉输入法) is an open-source Chinese input method for Android, iOS, macOS, Linux, Windows and HarmonyOS. Every platform ships a native host — an input method service on Android, a keyboard extension on iOS, InputMethodKit on macOS, IBus and Fcitx5 on Linux, TSF on Windows, InputMethodExtensionAbility on HarmonyOS — on top of one shared Rust input runtime and engine in the [msime](https://github.com/metasequoiaime/msime) monorepo. The Windows release is still built and shipped from [msime-windows](https://github.com/metasequoiaime/msime-windows). GPL-3.0, and it will stay fully open source.
->
-> An input method sees everything you type, so the privacy boundary should be checkable by reading the code rather than taken on trust. That is the main reason this is open.
->
-> Downloads: <https://msime.app/download/> · Docs: <https://msime.app/docs/> · Contributing: [RECRUITING.md](https://github.com/metasequoiaime/.github/blob/main/RECRUITING.md)
->
-> Most documentation and the UI are in Chinese, since that is who the product is for. Translation is one of the easiest ways to contribute and does not require building anything — see the recruiting page.
+<details>
+<summary><b>In English</b></summary>
+
+Metasequoia IME (水杉输入法) is an open-source Chinese input method for Android, iOS, macOS, Linux, Windows and HarmonyOS. Every platform ships a native host — an input method service on Android, a keyboard extension on iOS, InputMethodKit on macOS, IBus and Fcitx5 on Linux, TSF on Windows, InputMethodExtensionAbility on HarmonyOS — on top of one shared Rust input runtime and engine in the [msime](https://github.com/metasequoiaime/msime) monorepo. The Windows release is still built and shipped from [msime-windows](https://github.com/metasequoiaime/msime-windows). GPL-3.0, and it will stay fully open source.
+
+An input method sees everything you type, so the privacy boundary should be checkable by reading the code rather than taken on trust. That is the main reason this is open.
+
+Downloads: <https://msime.app/download/> · Docs: <https://msime.app/docs/> · Contributing: [RECRUITING.md](https://github.com/metasequoiaime/.github/blob/main/RECRUITING.md)
+
+Most documentation and the UI are in Chinese, since that is who the product is for. Translation is one of the easiest ways to contribute and does not require building anything — see the recruiting page.
+
+</details>
 
 一套开源中文输入法。从 Windows 纯 TSF 前端起步，现在 Android、iOS、macOS、Linux、Windows 与 HarmonyOS 六个平台的原生宿主统一在 [msime](https://github.com/metasequoiaime/msime) 主仓，共用同一套 Rust 输入运行时与引擎（由原 C++ MSIME-Engine 移植）和同一份 React 设置界面，系统接入与文本上屏由各平台原生实现。Windows 正式版目前仍由 [msime-windows](https://github.com/metasequoiaime/msime-windows) 独立构建和发布。GPL-3.0，现在和将来都会保持 100% 开源。
 
