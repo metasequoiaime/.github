@@ -51,7 +51,7 @@ Windows 安装包的签名范围、团队角色、构建与发布流程见 [Code
 - [msime](https://github.com/metasequoiaime/msime) — 多平台主仓：六个平台的原生宿主、共享 Rust 输入引擎与运行时、Tauri + React 设置界面
 - [msime-windows](https://github.com/metasequoiaime/msime-windows) — Windows 平台产品（TSF、Server、GUI、页面与安装器）
 - [msime-cloud](https://github.com/metasequoiaime/msime-cloud) — 共通 Go 后端：云候选、AI 联想、翻译、语音识别
-- [msime-customdict](https://github.com/metasequoiaime/msime-customdict) — 人工维护的共享自定义词库
+- [msime-dictionary](https://github.com/metasequoiaime/msime-dictionary) — 词库源数据：基础词库、人工维护词条与翻译、专业词库
 - [msime-web](https://github.com/metasequoiaime/msime-web) — 官网
 
 原 MSIME-Engine、MSIME-Linux 已归档，内容迁入 msime 主仓；MSIME-Apple 已更名为 msime。其余仓库（语言模型、皮肤、Homebrew tap 等）见下方仓库列表。
