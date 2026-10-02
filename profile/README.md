@@ -15,7 +15,7 @@ Metasequoia IME (水杉输入法) is an open-source Chinese input method for And
 
 An input method sees everything you type, so the privacy boundary should be checkable by reading the code rather than taken on trust. That is the main reason this is open.
 
-Downloads: <https://msime.app/download/> · Docs: <https://msime.app/docs/> · Contributing: [RECRUITING.md](https://github.com/metasequoiaime/.github/blob/main/RECRUITING.md)
+Downloads: <https://msime.app/download/> · Docs: <https://msime.app/docs/> · [Code signing policy](https://github.com/metasequoiaime/msime-windows/blob/develop/docs/code-signing-policy.md) · Contributing: [RECRUITING.md](https://github.com/metasequoiaime/.github/blob/main/RECRUITING.md)
 
 Most documentation and the UI are in Chinese, since that is who the product is for. Translation is one of the easiest ways to contribute and does not require building anything — see the recruiting page.
 
@@ -35,6 +35,12 @@ Most documentation and the UI are in Chinese, since that is who the product is f
 | HarmonyOS（手机 / 平板 / 电脑） | 公开测试 | [msime](https://github.com/metasequoiaime/msime/releases) |
 
 下载与安装说明见[官网](https://msime.app/download/)。
+
+## 代码签名策略 / Code signing policy
+
+Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/).
+
+Windows 安装包的签名范围、团队角色、构建与发布流程见 [Code signing policy](https://github.com/metasequoiaime/msime-windows/blob/develop/docs/code-signing-policy.md)，隐私说明见 [PRIVACY.md](https://github.com/metasequoiaime/msime-windows/blob/develop/PRIVACY.md)。
 
 ## 为什么开源
 
