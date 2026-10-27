@@ -1,6 +1,8 @@
 """Cross-repository consistency checks for the product lock files.
 
-Each platform repository pins the shared dictionary release in its own lock file: msime-windows in `product-lock.json`, the msime monorepo in `resources/desktop-dictionary.lock.json`, and the two use different formats. Every repository validates its own lock, but nothing else compares them, so the products can quietly ship different data under the same dictionary tag.
+Each platform repository pins the shared dictionary release in its own lock file; the msime monorepo uses `resources/desktop-dictionary.lock.json`, while `product-lock.json` is the other supported format. Every repository validates its own lock, but nothing else compares them, so the products can quietly ship different data under the same dictionary tag.
+
+msime-windows is deliberately not compared: it stays on the legacy MetasequoiaIME/MSIME-Engine dictionary (dict-v1.0.0, `msime.db`/`others.db`/`english.db`), whose files differ from the msime-dictionary releases the msime monorepo ships, and it is not being migrated. Comparing the two only ever reports that known difference.
 
 The engine used to be a separate repository pinned by submodule gitlink; it now lives inside each product repository, so the engine pin comparison below is no longer wired into the audit.
 
@@ -10,7 +12,6 @@ from urllib.parse import urlparse
 
 # Platform repository -> path of the lock that pins its dictionary release.
 PLATFORM_LOCKS = {
-    'msime-windows': 'product-lock.json',
     'msime': 'resources/desktop-dictionary.lock.json',
 }
 ENGINE_SUBMODULE_PATH = 'vendor/MetasequoiaImeEngine'
